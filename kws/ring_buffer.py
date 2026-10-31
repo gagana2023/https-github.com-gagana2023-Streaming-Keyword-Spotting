@@ -1,25 +1,18 @@
-"""Sample and feature ring buffers. LEARNING MODE: you write the bodies (see TODOs).
+"""Sample and feature ring buffers.
 
-Concept
--------
-A stream never ends, so we cannot keep "the whole signal". We only ever need a sliding
-window: the last 640 samples (one MFCC window) and the last 49 frames (one model input).
-A ring buffer keeps that window in a fixed, preallocated array. Instead of shifting the data
-on every push (O(n) copy, and in Python an easy place to allocate), it keeps a write index
-that wraps around: new data overwrites the oldest slot.
+A stream never ends, so we only keep a sliding window: the last 640 samples (one MFCC window)
+and the last 49 frames (one model input). A ring buffer keeps that window in a fixed,
+preallocated array with a write index that wraps around: new data overwrites the oldest slot,
+so nothing is shifted or allocated in the hot loop.
 
-Reading "in time order" is the subtle part. Once the buffer has wrapped, the oldest element is
-at the write index, not at index 0, so the logical sequence is arr[head:] followed by arr[:head].
-Consumers (the FFT, the model) want oldest-to-newest, so `read_into` does that unwrapping with
-at most two slice copies into a caller-owned array. Nothing is allocated in the hot loop.
+Reading in time order is the subtle part. Once the buffer has wrapped, the oldest element sits at
+the write index, so the logical sequence is buf[head:] followed by buf[:head]. `read_into`
+unwraps it with at most two slice copies into a caller-owned array.
 
-Two buffers, two jobs:
-  * SampleRingBuffer: raw samples, pushed 320 at a time (one hop), read as the latest 640.
-  * FeatureRingBuffer: MFCC frames, pushed one at a time, read as the latest 49 x 10 block
-    (float32, already normalised) for ORT. Normalising once per pushed frame (10 values) is
-    far cheaper than normalising the 490 values at every inference.
-
-The tests are in tests/test_ring_buffer.py. They fail until you implement these.
+  * SampleRingBuffer: raw samples, pushed one hop (320) at a time, read as the latest 640.
+  * FeatureRingBuffer: MFCC frames, pushed one at a time, read as the latest 49 x 10 float32
+    block, already normalised, for ORT. Normalising the 10 values of each pushed frame is far
+    cheaper than normalising all 490 values at every inference.
 """
 
 from typing import Any
@@ -32,35 +25,39 @@ class SampleRingBuffer:
     """Fixed-capacity buffer of the most recent `capacity` samples."""
 
     def __init__(self, capacity: int, dtype: Any = np.float64) -> None:
-        # TODO: preallocate `self._buf` (capacity,), a write index and a count of valid samples.
-        raise NotImplementedError("TODO(learning mode): SampleRingBuffer.__init__")
+        self._capacity = capacity
+        self._buf = np.zeros(capacity, dtype=dtype)
+        self._head = 0  # next write position, which is also the oldest sample once full
+        self._count = 0
 
     def __len__(self) -> int:
-        """Number of valid samples held, at most `capacity`."""
-        raise NotImplementedError("TODO(learning mode): SampleRingBuffer.__len__")
+        return self._count
 
     @property
     def full(self) -> bool:
-        raise NotImplementedError("TODO(learning mode): SampleRingBuffer.full")
+        return self._count == self._capacity
 
     def reset(self) -> None:
-        raise NotImplementedError("TODO(learning mode): SampleRingBuffer.reset")
+        self._head = 0
+        self._count = 0
 
     def push(self, x: NDArray[Any]) -> None:
-        """Append `x` (1-D, len(x) <= capacity), overwriting the oldest samples.
-
-        TODO: handle wrap-around with at most two slice assignments. Raise ValueError if
-        len(x) > capacity. Do not allocate (no np.concatenate / np.roll).
-        """
-        raise NotImplementedError("TODO(learning mode): SampleRingBuffer.push")
+        n = len(x)
+        if n > self._capacity:
+            raise ValueError(f"push of {n} samples exceeds capacity {self._capacity}")
+        first = min(n, self._capacity - self._head)
+        self._buf[self._head : self._head + first] = x[:first]
+        if first < n:  # wrapped: the rest goes to the start of the array
+            self._buf[: n - first] = x[first:]
+        self._head = (self._head + n) % self._capacity
+        self._count = min(self._count + n, self._capacity)
 
     def read_into(self, out: NDArray[Any]) -> None:
-        """Copy the held samples, oldest first, into `out` (shape (capacity,)).
-
-        TODO: raise ValueError unless the buffer is full. Once full, the oldest sample is at
-        the write index; copy buf[head:] then buf[:head].
-        """
-        raise NotImplementedError("TODO(learning mode): SampleRingBuffer.read_into")
+        if not self.full:
+            raise ValueError(f"buffer holds {self._count} of {self._capacity} samples")
+        tail = self._capacity - self._head
+        out[:tail] = self._buf[self._head :]
+        out[tail:] = self._buf[: self._head]
 
 
 class FeatureRingBuffer:
@@ -73,30 +70,40 @@ class FeatureRingBuffer:
         mean: NDArray[np.float64] | None = None,
         std: NDArray[np.float64] | None = None,
     ) -> None:
-        # TODO: preallocate a float32 (n_frames, n_mfcc) store. If mean/std are given, frames
-        # are normalised as (frame - mean) / std at push time (spec 3.2). Both or neither.
-        raise NotImplementedError("TODO(learning mode): FeatureRingBuffer.__init__")
+        if (mean is None) != (std is None):
+            raise ValueError("give both mean and std, or neither")
+        self._n_frames = n_frames
+        self._buf = np.zeros((n_frames, n_mfcc), dtype=np.float32)
+        self._mean = mean
+        self._std = std
+        self._tmp = np.zeros(n_mfcc, dtype=np.float64)  # float64 scratch: round to float32 once
+        self._head = 0
+        self._count = 0
 
     def __len__(self) -> int:
-        raise NotImplementedError("TODO(learning mode): FeatureRingBuffer.__len__")
+        return self._count
 
     @property
     def full(self) -> bool:
-        raise NotImplementedError("TODO(learning mode): FeatureRingBuffer.full")
+        return self._count == self._n_frames
 
     def reset(self) -> None:
-        raise NotImplementedError("TODO(learning mode): FeatureRingBuffer.reset")
+        self._head = 0
+        self._count = 0
 
     def push(self, frame: NDArray[np.float64]) -> None:
-        """Append one (n_mfcc,) frame, normalising into the store without allocating.
-
-        TODO: use np.subtract / np.divide with out= pointing at the destination row.
-        """
-        raise NotImplementedError("TODO(learning mode): FeatureRingBuffer.push")
+        row = self._buf[self._head]
+        if self._mean is not None and self._std is not None:
+            np.subtract(frame, self._mean, out=self._tmp)
+            np.divide(self._tmp, self._std, out=row, casting="same_kind")
+        else:
+            row[:] = frame
+        self._head = (self._head + 1) % self._n_frames
+        self._count = min(self._count + 1, self._n_frames)
 
     def read_into(self, out: NDArray[np.float32]) -> None:
-        """Copy the frames, oldest first, into `out` (shape (n_frames, n_mfcc), float32).
-
-        TODO: raise ValueError unless full. Same two-slice unwrap as SampleRingBuffer.
-        """
-        raise NotImplementedError("TODO(learning mode): FeatureRingBuffer.read_into")
+        if not self.full:
+            raise ValueError(f"buffer holds {self._count} of {self._n_frames} frames")
+        tail = self._n_frames - self._head
+        out[:tail] = self._buf[self._head :]
+        out[tail:] = self._buf[: self._head]
