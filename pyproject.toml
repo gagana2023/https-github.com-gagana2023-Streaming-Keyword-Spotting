@@ -18,6 +18,11 @@ ignore_missing_imports = true
 files = ["."]
 exclude = ['^\.venv/']
 
+# CI has no torch, so torch.nn.Module is Any there; strict mode would reject subclassing it.
+[[tool.mypy.overrides]]
+module = ["train.model", "train.mfcc_torch"]
+disallow_subclassing_any = false
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
