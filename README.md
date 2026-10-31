@@ -1,6 +1,6 @@
 # Streaming keyword spotting with INT8 inference
 
-Work in progress: M0-M1 done (data, features, DS-CNN training, INT8 quantisation). The full
+Work in progress: M0–M1 done (data, features, DS-CNN training, INT8 quantisation). The full
 README (results table, limitations) is written at M4. See `docs/DESIGN.md` for decisions.
 
 ## Reproduce M1
@@ -8,7 +8,7 @@ README (results table, limitations) is written at M4. See `docs/DESIGN.md` for d
 ```
 python -m venv .venv && .venv/Scripts/activate        # Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
-python -m train.run_all                                # about 15 min on a 20-thread laptop CPU
+python -m train.run_all                                # about 10 min of training on a 20-thread laptop CPU
 ```
 
 This downloads Speech Commands v2 (2.3 GB) into `data/`, trains for 30 epochs, writes

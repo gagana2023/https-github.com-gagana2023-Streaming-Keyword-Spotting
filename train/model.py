@@ -34,7 +34,8 @@ class DSCNN(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.blocks(self.stem(x))
-        return self.fc(x.mean(dim=(2, 3)))
+        out: torch.Tensor = self.fc(x.mean(dim=(2, 3)))
+        return out
 
 
 def count_parameters(model: nn.Module) -> int:

@@ -27,7 +27,8 @@ def to_features(frontend: TorchMfcc, pcm: np.ndarray[Any, Any]) -> torch.Tensor:
     x = torch.from_numpy(np.ascontiguousarray(pcm)).float()
     if pcm.dtype == np.int16:
         x = x / 32768.0
-    return frontend(x).unsqueeze(1)
+    feats: torch.Tensor = frontend(x).unsqueeze(1)
+    return feats
 
 
 def evaluate(model: nn.Module, frontend: TorchMfcc, data: SplitData, batch: int = 500) -> float:

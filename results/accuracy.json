@@ -66,8 +66,8 @@
   "features": "NumPy reference (features/mfcc_ref.py), normalised, float32 into ORT",
   "ort_session": "batch 1, CPUExecutionProvider",
   "env": {
-    "date_utc": "2026-10-31T19:04:58+00:00",
-    "git_commit": "53dba992de9cfc3852c06de1f2f18cb1259bffd4",
+    "date_utc": "2026-10-31T20:04:12+00:00",
+    "git_commit": "c9d2b8557b2d6319eb930b710603148ebb64d523",
     "git_dirty": true,
     "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
     "logical_cores": 20,
