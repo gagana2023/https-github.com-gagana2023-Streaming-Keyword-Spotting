@@ -1,0 +1,127 @@
+{
+  "dataset": "speech_commands_v0.02",
+  "classes": [
+    "yes",
+    "no",
+    "up",
+    "down",
+    "left",
+    "right",
+    "on",
+    "off",
+    "stop",
+    "go",
+    "_unknown_",
+    "_silence_"
+  ],
+  "seed": 0,
+  "counts": {
+    "train": {
+      "yes": 3228,
+      "no": 3130,
+      "up": 2948,
+      "down": 3134,
+      "left": 3037,
+      "right": 3019,
+      "on": 3086,
+      "off": 2970,
+      "stop": 3111,
+      "go": 3106,
+      "_unknown_": 3077,
+      "_silence_": 3077
+    },
+    "val": {
+      "yes": 397,
+      "no": 406,
+      "up": 350,
+      "down": 377,
+      "left": 352,
+      "right": 363,
+      "on": 363,
+      "off": 373,
+      "stop": 350,
+      "go": 372,
+      "_unknown_": 370,
+      "_silence_": 370
+    },
+    "test": {
+      "yes": 419,
+      "no": 405,
+      "up": 425,
+      "down": 406,
+      "left": 412,
+      "right": 396,
+      "on": 396,
+      "off": 402,
+      "stop": 411,
+      "go": 402,
+      "_unknown_": 407,
+      "_silence_": 407
+    }
+  },
+  "totals": {
+    "train": 36923,
+    "val": 4443,
+    "test": 4888
+  },
+  "unknown_and_silence_size_rule": "mean keyword-class size of the split",
+  "held_out_noise_files": [
+    "doing_the_dishes.wav",
+    "pink_noise.wav"
+  ],
+  "noise_files_in_training_pool": [
+    "dude_miaowing.wav",
+    "exercise_bike.wav",
+    "running_tap.wav",
+    "white_noise.wav"
+  ],
+  "noise_segment_fractions_by_time": {
+    "train": 0.8,
+    "val": 0.1,
+    "test": 0.1
+  },
+  "norm_mean": [
+    -30.83918530290123,
+    5.764951157335171,
+    0.1328681175003931,
+    -0.5022317150888677,
+    -0.25822685843504384,
+    -0.23479689969599907,
+    -0.445974020170287,
+    -0.37661849287223964,
+    -0.5896831710535363,
+    -0.4857460899236292
+  ],
+  "norm_std": [
+    28.387118424579874,
+    7.719044359233372,
+    4.841853697526764,
+    3.922638928636404,
+    3.1518425845218627,
+    2.4717661509436377,
+    2.2502541132083027,
+    1.953189177460029,
+    1.880335253844663,
+    1.7046975837022953
+  ],
+  "env": {
+    "date_utc": "2026-10-31T18:54:11+00:00",
+    "git_commit": "d33fcf6d69dee8389349215f5713405d2bc2e083",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": null,
+    "command": "python -m train.data"
+  }
+}
