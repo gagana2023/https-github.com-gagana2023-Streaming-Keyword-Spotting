@@ -5,6 +5,7 @@ up front so recording in the hot loop is one item assignment per stage and alloc
 Warm-up (the first 50 inferences, and every hop before the 50th) is excluded from summaries.
 """
 
+import sys
 from typing import Any
 
 import numpy as np
@@ -50,3 +51,48 @@ class StageTimes:
 def _percentiles(x: NDArray[np.float64]) -> dict[str, float]:
     p50, p95, p99 = np.percentile(x, [50, 95, 99])
     return {"p50": float(p50), "p95": float(p95), "p99": float(p99), "max": float(np.max(x))}
+
+
+def peak_rss_bytes() -> int:
+    """Peak resident set size of this process, in bytes.
+
+    Linux `ru_maxrss` is in KiB and macOS's is in bytes; Windows has no `resource` module, so
+    the peak working set is read from the Win32 API (also bytes).
+    """
+    if sys.platform == "win32":
+        import ctypes
+        from ctypes import wintypes
+
+        class Counters(ctypes.Structure):
+            _fields_ = [
+                ("cb", wintypes.DWORD),
+                ("PageFaultCount", wintypes.DWORD),
+                ("PeakWorkingSetSize", ctypes.c_size_t),
+                ("WorkingSetSize", ctypes.c_size_t),
+                ("QuotaPeakPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaPeakNonPagedPoolUsage", ctypes.c_size_t),
+                ("QuotaNonPagedPoolUsage", ctypes.c_size_t),
+                ("PagefileUsage", ctypes.c_size_t),
+                ("PeakPagefileUsage", ctypes.c_size_t),
+            ]
+
+        counters = Counters()
+        counters.cb = ctypes.sizeof(Counters)
+        kernel32 = ctypes.WinDLL("kernel32")
+        psapi = ctypes.WinDLL("psapi")
+        kernel32.GetCurrentProcess.restype = wintypes.HANDLE
+        psapi.GetProcessMemoryInfo.argtypes = [
+            wintypes.HANDLE, ctypes.POINTER(Counters), wintypes.DWORD,
+        ]  # fmt: skip
+        ok = psapi.GetProcessMemoryInfo(
+            kernel32.GetCurrentProcess(), ctypes.byref(counters), counters.cb
+        )
+        if not ok:
+            raise OSError("GetProcessMemoryInfo failed")
+        return int(counters.PeakWorkingSetSize)
+
+    import resource
+
+    peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    return int(peak if sys.platform == "darwin" else peak * 1024)

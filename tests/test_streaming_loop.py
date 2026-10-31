@@ -1,5 +1,6 @@
 """End-to-end checks of ORTModel and run_stream on a tiny synthetic ONNX model (CI-safe)."""
 
+import tracemalloc
 from pathlib import Path
 
 import numpy as np
@@ -8,6 +9,7 @@ from onnx import TensorProto, helper
 
 from kws.detector import Detector, detect_from_logits
 from kws.ort_model import ORTModel
+from kws.stats import peak_rss_bytes
 from kws.stream import run_stream
 
 
@@ -60,3 +62,31 @@ def test_run_stream_schedule_and_replay(tmp_path: Path) -> None:
     assert detect_from_logits(res.logits, res.inference_times, 0.2, 3) == res.detections
     summary = res.times.summary(warmup_inferences=10)
     assert summary["inferences_measured"] == len(res.inference_times) - 10
+
+
+def test_baseline_matches_optimised_logits(tmp_path: Path) -> None:
+    path = tmp_path / "tiny.onnx"
+    make_tiny_model(path)
+    rng = np.random.default_rng(3)
+    samples = (rng.standard_normal(16000 * 4) * 3000).astype(np.int16)
+    fast = run_stream(samples, ORTModel(path), Detector(0.2, 3), record_logits=True)
+    slow = run_stream(
+        samples, ORTModel(path), Detector(0.2, 3), record_logits=True, mode="baseline"
+    )
+    assert fast.logits is not None and slow.logits is not None
+    assert fast.inference_times is not None and slow.inference_times is not None
+    np.testing.assert_array_equal(fast.inference_times, slow.inference_times)
+    np.testing.assert_allclose(fast.logits, slow.logits, atol=1e-4)
+    assert fast.detections == slow.detections
+
+
+def test_allocation_probe_and_peak_rss(tmp_path: Path) -> None:
+    path = tmp_path / "tiny.onnx"
+    make_tiny_model(path)
+    rng = np.random.default_rng(4)
+    samples = (rng.standard_normal(16000 * 12) * 3000).astype(np.int16)
+    res = run_stream(samples, ORTModel(path), Detector(0.99, 3), alloc_hops=100)
+    assert res.alloc_bytes is not None and len(res.alloc_bytes) == 100
+    assert np.all(res.alloc_bytes >= 0)
+    assert not tracemalloc.is_tracing()
+    assert peak_rss_bytes() > 1_000_000
