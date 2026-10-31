@@ -31,3 +31,13 @@
 - Test stream (1 hour, 828 keywords, 346 unknown words), `results/stream_eval_test.json`: INT8 441 hits, 387 misses (46.7 %), 15 false accepts (15.0/hour); FP32 445 hits (46.3 % miss), 13 false accepts. This is poor compared with 92.8 % clip accuracy. `results/stream_window_diagnostic.json` points to the model on noisy, unseen-noise audio (83.9 % keyword accuracy on centred validation-stream windows) rather than the streaming code. Not retrained: that is a scope decision for you.
 - CLI check: `kws.stream` on the test stream at the chosen point produced detections identical to `eval_stream`. Timings from that run are not reported as results (M4 owns latency).
 - Tests: `ruff check` clean, `mypy` clean, `pytest` 59 passed (21 new: detector, timing stats, ORT binding and loop schedule on a tiny synthetic ONNX model, stream generator, scoring). The loop and generator tests need no dataset or model, so they run in CI.
+
+
+## M4 — Profiling, optimisation and documentation
+
+- Implemented baseline mode and `--pin-cpu` in `kws/stream.py`; peak RSS and per-hop tracemalloc probe (`kws/stats.py`, `--alloc-hops`); `tools/bench.py` (matrix, 5 interleaved repetitions, GC on/off, allocations, one fresh process per run); `tools/profile_ort.py`; `tools/results_table.py` (writes `docs/RESULTS.md` and the README results block); README, DESIGN, EXPLAIN_BACK.
+- Reproduce: `python -m tools.bench`, `python -m tools.profile_ort`, `python -m tools.results_table`. Results: `results/latency_<mode>_<model>_<threads>[_nogc].json` (10 files), `results/ort_profile.json`.
+- Key results (optimised, 1 thread, i7-13650HX, Python on host CPU): FP32 inference p50 0.073 ms, INT8 0.625 ms, so INT8 is 8.55x slower; INT8 hop total p50 0.018 / p95 0.663 ms; Python allocations 9,736 B/hop optimised vs 251,570 baseline; peak RSS about 187-193 MB. One hop over 20 ms in 50 runs (24.5 ms, baseline FP32).
+- Benchmark conditions: the first two full runs (`results/unpinned/`, `results/battery_run/`) were unstable (battery power, Balanced plan) and are kept as evidence; the reported run is plugged in with interleaved repetitions. Details in DESIGN.md.
+- Open: stream detection quality (46.7 % miss, 15 false accepts/hour on test) is unchanged and not retrained; that remains your scope decision. CI on GitHub has not been checked.
+- Tests: `ruff check` clean, `mypy` clean, `pytest` 61 passed. `ruff format --check` still flags older files untouched by M4.

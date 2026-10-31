@@ -1,0 +1,316 @@
+{
+  "mode": "optimised",
+  "model": "dscnn_int8.onnx",
+  "model_bytes": 37589,
+  "stream": "test.wav",
+  "stream_seconds": 3600.0,
+  "settings": {
+    "threshold": 0.93,
+    "smooth": 4,
+    "infer_every": 5,
+    "gc_enabled": true,
+    "realtime": false,
+    "pinned_cpu": null,
+    "threads": 0,
+    "repetitions": 5,
+    "repetition_order": "interleaved across configurations"
+  },
+  "aggregate": {
+    "features_ms": {
+      "p50": {
+        "median": 0.0253,
+        "min": 0.025,
+        "max": 0.0262
+      },
+      "p95": {
+        "median": 0.0486,
+        "min": 0.0467,
+        "max": 0.0487
+      },
+      "p99": {
+        "median": 0.0555,
+        "min": 0.0542,
+        "max": 0.0563
+      },
+      "max": {
+        "median": 1.4237,
+        "min": 1.4004,
+        "max": 1.525
+      }
+    },
+    "inference_ms": {
+      "p50": {
+        "median": 0.2514,
+        "min": 0.2501,
+        "max": 0.2549
+      },
+      "p95": {
+        "median": 0.2969,
+        "min": 0.2959,
+        "max": 0.3063
+      },
+      "p99": {
+        "median": 0.34205999999999986,
+        "min": 0.3303,
+        "max": 0.514219999999999
+      },
+      "max": {
+        "median": 5.4928,
+        "min": 1.6696,
+        "max": 14.2604
+      }
+    },
+    "post_ms": {
+      "p50": {
+        "median": 0.0176,
+        "min": 0.0174,
+        "max": 0.0179
+      },
+      "p95": {
+        "median": 0.0373,
+        "min": 0.0364,
+        "max": 0.0388
+      },
+      "p99": {
+        "median": 0.0492,
+        "min": 0.047659999999999855,
+        "max": 0.0553
+      },
+      "max": {
+        "median": 1.3945,
+        "min": 0.7466,
+        "max": 1.4005
+      }
+    },
+    "total_per_hop_ms": {
+      "p50": {
+        "median": 0.0263,
+        "min": 0.0259,
+        "max": 0.0271
+      },
+      "p95": {
+        "median": 0.3119,
+        "min": 0.30870000000000003,
+        "max": 0.32167999999999886
+      },
+      "p99": {
+        "median": 0.37720000000000004,
+        "min": 0.3759,
+        "max": 0.38889999999999997
+      },
+      "max": {
+        "median": 5.6465,
+        "min": 1.7224,
+        "max": 14.3352
+      }
+    },
+    "deadline_misses": {
+      "median": 0,
+      "min": 0,
+      "max": 0
+    },
+    "peak_rss_bytes": {
+      "median": 188956672,
+      "min": 188788736,
+      "max": 189255680
+    }
+  },
+  "allocations": null,
+  "allocations_note": "Python (tracemalloc) high-water mark above the start-of-hop level, over 1000 hops after warm-up; ORT native allocations are not visible",
+  "repetitions": [
+    {
+      "timings": {
+        "warmup_inferences": 50,
+        "hops_measured": 179705,
+        "inferences_measured": 35941,
+        "features_ms": {
+          "p50": 0.0251,
+          "p95": 0.0467,
+          "p99": 0.0555,
+          "max": 1.4237
+        },
+        "inference_ms": {
+          "p50": 0.2501,
+          "p95": 0.2969,
+          "p99": 0.3419,
+          "max": 1.6696
+        },
+        "post_ms": {
+          "p50": 0.0176,
+          "p95": 0.0386,
+          "p99": 0.0553,
+          "max": 1.3945
+        },
+        "total_per_hop_ms": {
+          "p50": 0.026,
+          "p95": 0.30870000000000003,
+          "p99": 0.37720000000000004,
+          "max": 1.7224
+        },
+        "deadline_ms": 20.0,
+        "deadline_misses": 0
+      },
+      "peak_rss_bytes": 189083648
+    },
+    {
+      "timings": {
+        "warmup_inferences": 50,
+        "hops_measured": 179705,
+        "inferences_measured": 35941,
+        "features_ms": {
+          "p50": 0.0253,
+          "p95": 0.0487,
+          "p99": 0.0563,
+          "max": 1.525
+        },
+        "inference_ms": {
+          "p50": 0.2549,
+          "p95": 0.3063,
+          "p99": 0.514219999999999,
+          "max": 2.4239
+        },
+        "post_ms": {
+          "p50": 0.0179,
+          "p95": 0.0388,
+          "p99": 0.0533,
+          "max": 0.7466
+        },
+        "total_per_hop_ms": {
+          "p50": 0.0263,
+          "p95": 0.32167999999999886,
+          "p99": 0.38889999999999997,
+          "max": 2.4802
+        },
+        "deadline_ms": 20.0,
+        "deadline_misses": 0
+      },
+      "peak_rss_bytes": 189255680
+    },
+    {
+      "timings": {
+        "warmup_inferences": 50,
+        "hops_measured": 179705,
+        "inferences_measured": 35941,
+        "features_ms": {
+          "p50": 0.0262,
+          "p95": 0.0486,
+          "p99": 0.0559,
+          "max": 1.4855
+        },
+        "inference_ms": {
+          "p50": 0.2516,
+          "p95": 0.297,
+          "p99": 0.3451,
+          "max": 14.2604
+        },
+        "post_ms": {
+          "p50": 0.0174,
+          "p95": 0.0372,
+          "p99": 0.0492,
+          "max": 1.4005
+        },
+        "total_per_hop_ms": {
+          "p50": 0.0271,
+          "p95": 0.3116,
+          "p99": 0.37849999999999995,
+          "max": 14.3352
+        },
+        "deadline_ms": 20.0,
+        "deadline_misses": 0
+      },
+      "peak_rss_bytes": 188956672
+    },
+    {
+      "timings": {
+        "warmup_inferences": 50,
+        "hops_measured": 179705,
+        "inferences_measured": 35941,
+        "features_ms": {
+          "p50": 0.0254,
+          "p95": 0.0487,
+          "p99": 0.0552,
+          "max": 1.4004
+        },
+        "inference_ms": {
+          "p50": 0.251,
+          "p95": 0.2967,
+          "p99": 0.3303,
+          "max": 7.2085
+        },
+        "post_ms": {
+          "p50": 0.0178,
+          "p95": 0.0373,
+          "p99": 0.049,
+          "max": 1.3975
+        },
+        "total_per_hop_ms": {
+          "p50": 0.0265,
+          "p95": 0.3163,
+          "p99": 0.3768,
+          "max": 7.352
+        },
+        "deadline_ms": 20.0,
+        "deadline_misses": 0
+      },
+      "peak_rss_bytes": 188788736
+    },
+    {
+      "timings": {
+        "warmup_inferences": 50,
+        "hops_measured": 179705,
+        "inferences_measured": 35941,
+        "features_ms": {
+          "p50": 0.025,
+          "p95": 0.0476,
+          "p99": 0.0542,
+          "max": 1.4105
+        },
+        "inference_ms": {
+          "p50": 0.2514,
+          "p95": 0.2959,
+          "p99": 0.34205999999999986,
+          "max": 5.4928
+        },
+        "post_ms": {
+          "p50": 0.0175,
+          "p95": 0.0364,
+          "p99": 0.047659999999999855,
+          "max": 1.3843
+        },
+        "total_per_hop_ms": {
+          "p50": 0.0259,
+          "p95": 0.3119,
+          "p99": 0.3759,
+          "max": 5.6465
+        },
+        "deadline_ms": 20.0,
+        "deadline_misses": 0
+      },
+      "peak_rss_bytes": 188850176
+    }
+  ],
+  "note": "Python-on-host-CPU timings; not device or accelerator latency. threads 0 = ORT intra-op default (all cores)",
+  "env": {
+    "date_utc": "2026-10-31T22:52:20+00:00",
+    "git_commit": "b4c919ca1e7360261d630cd8be62bd36e0293ed6",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": {
+      "intra_op_num_threads": 0,
+      "inter_op_num_threads": 1
+    },
+    "command": "python -u -m tools.bench"
+  }
+}

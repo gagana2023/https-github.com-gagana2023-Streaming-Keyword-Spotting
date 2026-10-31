@@ -77,3 +77,48 @@ Reproduce: `python -m pytest tests/test_ring_buffer.py tests/test_streaming_mfcc
 - This is much worse than the 92.8 % clip accuracy suggests. `tools/stream_diagnostic.py` (validation stream only) classifies the 1 s window centred on each word: keyword accuracy is 83.9 % overall (73.3 % at 5-10 dB, 88.8 % at 10-15 dB, 90.5 % at 15-20 dB), and 27.4 % of unknown words are labelled as keywords. So the main cause is the model on noisier, unseen-noise audio, not the streaming code (M2 showed the streaming features and predictions match the offline path exactly). Smoothing and a high threshold add further misses on top.
 - I did not retrain or change the model: that would change scope. One likely reason, not tested: training noise was added at amplitude 0-0.1 of the raw files, which is mostly a much higher SNR than the 5-20 dB streams, and pink noise (a held-out file) has no equivalent in the training noise pool.
 - Not tested, so not a finding: whether training with lower-SNR augmentation would close the gap.
+
+## M4 — Profiling, optimisation and documentation
+
+| Decision | Alternatives | Why |
+| --- | --- | --- |
+| Baseline mode = at every inference slice the last 16,000 samples, run the batch `mfcc_ref`, normalise, build fresh float32 arrays, `session.run`. Same schedule and detector as optimised | Re-run the streaming MFCC per hop but without ring buffers | Spec 3.5: "recomputes all 49 frames, fresh arrays, plain session.run". A test checks baseline and optimised logits agree (atol 1e-4) and give equal detections. In baseline the features stage is only non-zero on inference hops (it slices the stream array instead of keeping a 640-sample buffer). |
+| Every benchmark run is a fresh `python -m kws.stream` subprocess | One process looping over configurations | Peak RSS is per run and nothing carries over between configurations (ORT arenas, caches). |
+| Repetitions interleaved across configurations (round r runs every configuration once) | All 5 repetitions of one configuration, then the next | See "Benchmark conditions" below. |
+| Allocation probe: tracemalloc started after 50 warm-up inferences; per hop, `reset_peak()` then record peak minus the level at the start of the hop; 1,000 hops; separate run, never used for timings | Net growth per hop; `snapshot` diffs | Net growth would hide short-lived temporaries (the dominant cost). The high-water mark per hop is a lower bound on bytes allocated per hop, not the total. ORT native memory is invisible to tracemalloc. |
+| Peak RSS: `ru_maxrss` on Linux/macOS (KiB vs bytes handled), Win32 `PeakWorkingSetSize` on Windows | `psutil` | Spec forbids extra libraries. |
+| `--threads 0` = ORT default intra-op threads ("all cores") | Explicit `os.cpu_count()` | Records what ORT chooses; ORT's own default is the realistic "all cores" setting. |
+| Percentiles are summarised per run, then the median across repetitions of each percentile (min/max kept) | Pool all hop times | Keeps run-to-run variation visible; a max is the max of one run's worst hop. |
+| `tools/profile_ort.py` committed to explain INT8 vs FP32 | A one-off interactive profile | Honesty rule 1: the explanation in the README needs a committed script and a results file. |
+
+### Benchmark conditions (what went wrong first)
+
+1. First full matrix (`results/unpinned/`): configurations were stable within themselves but
+   differed from each other (optimised INT8 inference p50 3.8 ms vs 0.92 ms in a short run;
+   optimised FP32 with GC off 5x slower than with GC on). I suspected the hybrid P/E-core CPU.
+2. Pinned the 1-thread runs to logical CPU 2 (`--pin-cpu`). Results (`results/battery_run/`)
+   still shifted mid-configuration (optimised INT8 p50 2.12 ms for three repetitions, then
+   1.18 ms). The laptop was on battery with the Balanced power plan, so I concluded the drift
+   was clock/power behaviour. I did not isolate this further.
+3. Plugged in, interleaved the repetitions, kept the pinning. Spread across repetitions
+   dropped to a few percent. Only this run is reported in the README. Both earlier runs are kept
+   as evidence, not deleted.
+
+### Findings
+
+- INT8 is 8.55x slower than FP32 (inference p50 0.625 ms vs 0.073 ms, optimised, 1 thread).
+  `results/ort_profile.json` (profiler on, 500 runs, 1 thread): FP32 about 104 us per inference
+  of which 92 us is `Conv`; INT8 about 678 us of which 642 us is `QLinearConv` (590 us in the
+  stem and 1x1 convolutions, 52 us in the depthwise ones). Quantise/dequantise/transpose nodes add
+  about 25 us. So the slowdown is the INT8 convolution kernels, mostly the non-depthwise ones.
+  Cause not isolated. Profiled INT8/FP32 kernel-time ratio is 6.5x, lower than 8.55x because
+  profiling adds a fixed cost per node.
+- All cores: INT8 inference gets faster (0.625 -> 0.251 ms), FP32 slightly slower (0.073 -> 0.077
+  ms): the FP32 model is too small to benefit from threading.
+- Features: incremental is about 11x cheaper at p95 (0.279 ms vs 0.025 ms). End to end
+  the per-hop gain is smaller because inference dominates (INT8 hop p95 0.946 -> 0.663 ms, FP32
+  0.376 -> 0.104 ms).
+- GC on vs off: no difference at p95/p99 (0.115 vs 0.116 ms FP32 p99).
+- Allocations per hop (Python): 251,570 bytes baseline, 9,736 optimised. Not zero, because
+  `np.fft.rfft` and a few temporaries allocate each frame.
+- One deadline miss in 50 runs (24.5 ms, baseline FP32 1 thread, one repetition).

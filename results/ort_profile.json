@@ -1,0 +1,60 @@
+{
+  "runs": 500,
+  "models": {
+    "fp32": {
+      "kernel_us_per_inference_total": 104.3300000000033,
+      "per_op_us": {
+        "Conv": 91.6860000000033,
+        "ReorderOutput": 4.405999999999992,
+        "ReduceMean": 4.1400000000000015,
+        "Gemm": 4.097999999999996
+      },
+      "conv_us_by_kind": {
+        "depthwise": 0.0,
+        "pointwise_or_dense": 0.0,
+        "unattributed": 91.6860000000033
+      }
+    },
+    "int8": {
+      "kernel_us_per_inference_total": 677.9519999999983,
+      "per_op_us": {
+        "QLinearConv": 641.9339999999984,
+        "DequantizeLinear": 9.091999999999876,
+        "QuantizeLinear": 7.772000000000019,
+        "QGemm": 7.690000000000025,
+        "Transpose": 7.096000000000027,
+        "ReduceMean": 4.367999999999996
+      },
+      "conv_us_by_kind": {
+        "depthwise": 51.534000000001136,
+        "pointwise_or_dense": 590.400000000002,
+        "unattributed": 0.0
+      }
+    }
+  },
+  "int8_over_fp32_kernel_time": 6.498150100641971,
+  "note": "ORT profiler, 1 intra-op thread, Python on host CPU; profiling adds overhead",
+  "env": {
+    "date_utc": "2026-10-31T22:53:41+00:00",
+    "git_commit": "b4c919ca1e7360261d630cd8be62bd36e0293ed6",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": {
+      "intra_op_num_threads": 1,
+      "inter_op_num_threads": 1
+    },
+    "command": "python -m tools.profile_ort"
+  }
+}
