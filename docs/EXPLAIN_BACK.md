@@ -9,3 +9,11 @@ Answer these without notes.
 3. What does `onnx.checker.check_model` verify that ORT loading alone might not?
 4. In the smoke test, why compare to a NumPy computation instead of just checking the output shape?
 5. Why is `ir_version` set explicitly on the test model, and what can go wrong if it is newer than the runtime supports?
+
+## M1 — Data, features, training and quantisation
+
+1. Why are the mel and DCT matrices saved as `.npy` files that training and streaming both load, instead of each side computing them? What bugs does this rule out, and which bugs does it not rule out?
+2. Why are 2 of the 6 noise files held out, and why did I also cut the other 4 by time into train/val/test segments? What would be optimistic about the numbers if val/test silence came from the same audio as training noise?
+3. Where do the normalisation mean and std come from, why must they come from the training set only, and what breaks in M2 if the streaming path forgets to apply them?
+4. In `quantize_static` with QOperator, QInt8 and per-channel weights: what does calibration actually measure, what does per-channel change compared with per-tensor, and why do I choose the checkpoint, thresholds and quantisation settings on validation rather than test?
+5. The torch features match the NumPy reference only to 1e-4, not exactly. Why is that acceptable for training but why does eval_onnx use the NumPy reference?
