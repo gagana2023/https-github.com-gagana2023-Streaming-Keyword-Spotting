@@ -28,3 +28,26 @@
 | QOperator, QInt8/QInt8, per-channel, MinMax, 200 train clips (as the spec says) | QDQ | The spec mandates QOperator. ORT warns that QInt8 activations and weights in QOperator "may lead to bad performance on x64". That is a latency question for M4; I will report it there rather than change the spec'd format silently. |
 | No quantisation fallbacks tried | The spec's fallback list | INT8 validation accuracy was 93.32% vs FP32 93.20%, so the "loses more than 2 points" trigger never fired. The single attempt is logged in `results/quantization_attempts.json`. |
 | Tuning and calibration decisions use validation only | | Honesty rule 3. |
+
+## M2 — Streaming features
+
+Implemented in `kws/ring_buffer.py` and `kws/streaming_mfcc.py`; tested by
+`tests/test_ring_buffer.py` and `tests/test_streaming_mfcc.py`; checked on real data by
+`tools/stream_parity.py`.
+
+| Decision | Alternative | Why |
+| --- | --- | --- |
+| `StreamingMFCC` returns raw (unnormalised) frames; `FeatureRingBuffer` normalises at push time | Normalise inside the MFCC, or the 490 values at each inference | The 1e-6 parity test is about the maths only; 10 values per hop instead of 490 per inference; normalisation lives in one place. |
+| Caller-owned `out` arrays, `read_into` | Return fresh arrays | Keeps the M3/M4 hot loop free of Python-side allocation. |
+| Mean subtracted into a float64 scratch, divided straight into the float32 store | Subtract and divide in float32 | Each value is rounded to float32 once, as in offline `normalize(...).astype(float32)`, so model inputs are bit-identical (0.0 difference), not merely close. |
+| Hop copied into a float64 scratch (int16 scaled by 1/32768) before the sample buffer | Buffer int16 and scale per window | One float64 path for int16 and float input; a test checks they agree. |
+| Power as `re*re + im*im`, matmul with `out=` | `np.abs(fft)**2` | No temporaries. Only the `np.fft.rfft` result is allocated per frame; M4 measures that, it is not assumed away. |
+| Unit tests use synthetic tone+noise clips; real-clip parity is a tool | Dataset in tests | CI has no dataset or torch. `python -m tools.stream_parity` needs the dataset and writes the results file. |
+| Prediction parity for both FP32 and INT8, same batch-1 ORT sessions as `train.eval_onnx` | Compare features only | Any disagreement can then only come from the feature path. |
+
+**Measured** (`results/stream_feature_parity.json`, test split): raw MFCC max |diff| 4.3e-14 over
+50 clips (limit 1e-6); model-input max |diff| 0.0 over 4,888 clips; 0 of 4,888 FP32 and 0 of
+4,888 INT8 predictions differ from the offline path.
+
+Reproduce: `python -m pytest tests/test_ring_buffer.py tests/test_streaming_mfcc.py`, then
+`python -m tools.stream_parity`.

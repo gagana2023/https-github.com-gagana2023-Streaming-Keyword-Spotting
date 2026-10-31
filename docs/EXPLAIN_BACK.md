@@ -31,3 +31,19 @@
 3. **Why does depthwise-separable convolution suit a small KWS model?** It cuts parameters and multiply-adds by roughly an order of magnitude versus a full 3x3 conv at 64 channels, with little accuracy loss.
 4. **What does static quantisation need calibration data for?** To choose the scale of each activation tensor, since unlike weights their ranges are unknown until data flows through. Unrepresentative calibration data clips or wastes range.
 5. **How do you know the INT8 model is not worse?** The same test clips go through ORT at batch 1 for both models: 92.82% vs 92.78%, with 43 differing predictions. Tuning used validation only, and the test split was evaluated once.
+
+## M2 — Streaming features
+
+### What was built
+- **Sample ring buffer.** A fixed 640-slot array plus a write index `head`. A push of 320 samples writes at `head` (split into two slices if it crosses the end) and advances `head` modulo 640. Once full, the oldest sample is at `head`, so a time-ordered read is `buf[head:]` then `buf[:head]`. Worked example, capacity 4 holding 1,2,3,4: push `5,6` and the array is `[5,6,3,4]` with `head=2`; reading `buf[2:]` then `buf[:2]` gives `3,4,5,6`.
+- **Streaming MFCC.** Frame i covers samples `[320i, 320i+640)`. Each hop supplies the newer half of a window and the ring buffer still holds the older half. Hop 1: only 320 samples, so no frame (warm-up). Hop 2: 640 samples, so frame 0. A 16,000-sample clip is 50 hops and 49 frames, the same count as the batch reference. The per-frame maths is the batch maths on one row, with the same `mel.npy`, `dct.npy` and Hann window.
+- **Feature ring buffer.** The same wrap-around idea for 49 frames of 10 values, stored as float32. Each pushed frame is normalised once, `(x - mean) / std`, so an inference only copies 490 values in time order into the model input.
+- **Parity (from `results/stream_feature_parity.json`).** Raw MFCC max difference 4.3e-14 over 50 clips; model-input tensors identical (difference 0.0) over 4,888 test clips; 0 differing FP32 or INT8 predictions.
+
+### Interview questions
+1. **Frame i covers which samples, and why 49 frames and a silent first hop?** Samples `[320i, 320i+640)`; with no padding, 1 + (16000-640)/320 = 49. The first hop gives only 320 of the 640 samples a window needs, so it is warm-up; every later hop completes one window.
+2. **Why a ring buffer, and what does `read_into` do?** Appending and slicing the tail copies or allocates on every hop; a ring buffer overwrites the oldest slot in a preallocated array. After wrapping, the oldest element is at `head`, so `read_into` copies `buf[head:]` then `buf[:head]` into a caller-owned array.
+3. **Why raw MFCC out, normalise in the feature buffer?** It keeps the parity test about the maths alone and normalises 10 values per hop instead of 490 per inference. It must use the training-set mean and std from `features/config.json`; without them the model sees inputs on the wrong scale and accuracy collapses.
+4. **Parity is 4e-14, so why is the tolerance 1e-6 rather than 0?** The two paths do the same maths but in a different order (batched matmul and FFT versus per-frame), so float64 rounding differs at ~1e-14. The model input is float32 and rounded from float64 once in both paths, so those tensors came out identical and predictions matched exactly. Exact equality is a measured result here, not a guarantee.
+5. **What does `stream_parity.py` prove and not prove?** It proves the streaming features and predictions equal the offline ones on 4,888 test clips. It does not prove real-time latency, allocation behaviour, behaviour on continuous noisy streams, or detection quality (M3/M4).
+

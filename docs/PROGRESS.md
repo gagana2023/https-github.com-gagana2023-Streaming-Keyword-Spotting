@@ -14,3 +14,11 @@
 - Results: 23,756 parameters; best validation accuracy 93.20% (epoch 30); test accuracy FP32 92.82%, INT8 92.78% (-0.04 points); sizes 94,637 B / 37,589 B. No quantisation fallback was needed.
 - Tests: `ruff` clean, `mypy` clean, `pytest` 22 passed.
 - Note: the M1 code had been deleted from the working tree (it is still in git history). Restoring it was blocked, so it was re-written using the history as a reference and the results regenerated; they match the earlier run exactly.
+
+## M2 — Streaming features
+
+- Implemented `kws/ring_buffer.py` (`SampleRingBuffer`, `FeatureRingBuffer`) and `kws/streaming_mfcc.py` (`StreamingMFCC`, one frame per 320-sample hop). Tests (`tests/test_ring_buffer.py`, `tests/test_streaming_mfcc.py`) and `tools/stream_parity.py` were restored from git history and run against the new code.
+- `python -m tools.stream_parity` wrote `results/stream_feature_parity.json` (test split): raw MFCC max |diff| 4.3e-14 over 50 clips (limit 1e-6); model-input tensors identical (0.0) over 4,888 clips; FP32 and INT8 predictions differ on 0 of 4,888 clips (accuracy 92.82% / 92.78%, same as offline).
+- Tests: `ruff check` clean, `mypy` clean, `pytest` 38 passed. `ruff format --check` still flags three older files (`features/build_matrices.py`, `kws/envinfo.py`, `tests/test_dataset.py`) that this milestone did not touch.
+- Note: `git checkout` of the deleted files was denied, so they were recreated with `git show HEAD:<path>`.
+
