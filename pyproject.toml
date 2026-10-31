@@ -25,4 +25,5 @@ disallow_subclassing_any = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-q"
