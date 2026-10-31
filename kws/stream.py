@@ -23,6 +23,7 @@ only in how features and inputs are produced.
 import argparse
 import csv
 import gc
+import sys
 import time
 import tracemalloc
 from dataclasses import dataclass
@@ -181,6 +182,24 @@ def alloc_summary(alloc: NDArray[np.int64] | None) -> dict[str, float | int] | N
     }
 
 
+def pin_to_cpu(cpu: int) -> None:
+    """Pin this process to one logical CPU (hybrid CPUs otherwise mix P and E cores)."""
+    if sys.platform == "win32":
+        import ctypes
+
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        kernel32.GetCurrentProcess.restype = ctypes.c_void_p
+        kernel32.SetProcessAffinityMask.argtypes = [ctypes.c_void_p, ctypes.c_size_t]
+        if not kernel32.SetProcessAffinityMask(kernel32.GetCurrentProcess(), 1 << cpu):
+            raise OSError("SetProcessAffinityMask failed")
+    elif sys.platform.startswith("linux"):
+        import os
+
+        os.sched_setaffinity(0, {cpu})
+    else:
+        raise OSError("CPU pinning is not supported on this platform")
+
+
 def read_wav(path: Path) -> NDArray[np.int16]:
     data, sr = sf.read(path, dtype="int16")
     if sr != SAMPLE_RATE or data.ndim != 1:
@@ -213,10 +232,13 @@ def main() -> None:
         "--alloc-hops", type=int, default=0,
         help="trace Python allocations over this many hops after warm-up (slow; no timings)",
     )  # fmt: skip
+    p.add_argument("--pin-cpu", type=int, default=None, help="pin the process to this logical CPU")
     p.add_argument("--detections", type=Path)
     p.add_argument("--timings", type=Path)
     args = p.parse_args()
 
+    if args.pin_cpu is not None:
+        pin_to_cpu(args.pin_cpu)
     samples = read_wav(args.wav)
     model = ORTModel(args.model, args.threads)
     result = run_stream(
@@ -248,6 +270,7 @@ def main() -> None:
                     "infer_every": args.infer_every,
                     "gc_enabled": not args.no_gc,
                     "realtime": args.realtime,
+                    "pinned_cpu": args.pin_cpu,
                 },
                 "peak_rss_bytes": peak_rss_bytes(),
                 "deadline_misses_note": "a miss is a hop whose total processing time exceeds 20 ms",
