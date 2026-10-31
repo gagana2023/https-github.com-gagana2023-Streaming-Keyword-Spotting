@@ -1,4 +1,4 @@
-# CI skips training, so torch/torchaudio are left out. Versions match requirements.txt.
+# Torch-free subset used by CI (CI skips training; see requirements.txt for the full stack).
 numpy==2.5.4
 onnx==1.23.2
 onnxruntime==1.31.1

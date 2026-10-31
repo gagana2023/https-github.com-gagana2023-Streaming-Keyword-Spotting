@@ -5,38 +5,37 @@ from pathlib import Path
 import numpy as np
 import onnx
 import onnxruntime as ort
-from onnx import TensorProto, helper, numpy_helper
+from onnx import TensorProto, helper
 
 
-def _build_tiny_model(path: Path) -> np.ndarray:
-    """y = relu(x @ W + b), x: 1x4, y: 1x3. Returns W so the test can check the output."""
-    rng = np.random.default_rng(0)
-    w = rng.standard_normal((4, 3)).astype(np.float32)
-    b = np.array([0.5, -0.5, 0.0], dtype=np.float32)
+def _build_tiny_model(path: Path) -> None:
+    """y = relu(x @ W + b) with W = 2*I (4x4) and b = -1."""
+    w = helper.make_tensor("W", TensorProto.FLOAT, [4, 4], (2 * np.eye(4)).flatten().tolist())
+    b = helper.make_tensor("b", TensorProto.FLOAT, [4], [-1.0] * 4)
+    nodes = [
+        helper.make_node("MatMul", ["x", "W"], ["xw"]),
+        helper.make_node("Add", ["xw", "b"], ["z"]),
+        helper.make_node("Relu", ["z"], ["y"]),
+    ]
     graph = helper.make_graph(
-        [
-            helper.make_node("Gemm", ["x", "W", "b"], ["z"]),
-            helper.make_node("Relu", ["z"], ["y"]),
-        ],
+        nodes,
         "tiny",
         [helper.make_tensor_value_info("x", TensorProto.FLOAT, [1, 4])],
-        [helper.make_tensor_value_info("y", TensorProto.FLOAT, [1, 3])],
-        [numpy_helper.from_array(w, "W"), numpy_helper.from_array(b, "b")],
+        [helper.make_tensor_value_info("y", TensorProto.FLOAT, [1, 4])],
+        initializer=[w, b],
     )
     model = helper.make_model(graph, opset_imports=[helper.make_opsetid("", 17)])
     model.ir_version = 8
     onnx.checker.check_model(model)
     onnx.save(model, str(path))
-    return w
 
 
-def test_tiny_model_runs_through_ort(tmp_path: Path) -> None:
+def test_ort_loads_and_runs_tiny_model(tmp_path: Path) -> None:
     path = tmp_path / "tiny.onnx"
-    w = _build_tiny_model(path)
+    _build_tiny_model(path)
 
     sess = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
-    x = np.array([[1.0, -2.0, 0.5, 3.0]], dtype=np.float32)
+    x = np.array([[0.0, 0.5, 1.0, 2.0]], dtype=np.float32)
     (y,) = sess.run(None, {"x": x})
 
-    expected = np.maximum(x @ w + np.array([0.5, -0.5, 0.0], dtype=np.float32), 0)
-    np.testing.assert_allclose(y, expected, rtol=1e-5, atol=1e-6)
+    np.testing.assert_allclose(y, [[0.0, 0.0, 1.0, 3.0]], atol=1e-6)

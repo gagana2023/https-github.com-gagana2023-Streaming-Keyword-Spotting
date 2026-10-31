@@ -1,7 +1,7 @@
 [project]
 name = "kws-stream"
 version = "0.1.0"
-description = "Streaming keyword spotting with INT8 inference (DS-CNN, ONNX Runtime)"
+description = "Streaming keyword spotting with INT8 inference in Python"
 requires-python = ">=3.10"
 
 [tool.ruff]
@@ -15,17 +15,9 @@ select = ["E", "F", "I", "UP", "B"]
 python_version = "3.10"
 strict = true
 ignore_missing_imports = true
-files = ["features", "train", "kws", "tools", "tests"]
+files = ["."]
+exclude = ['^\.venv/']
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["."]
-
-# CI has no torch (ignore_missing_imports makes nn.Module an Any base), local runs do. These
-# relaxations keep mypy output identical in both environments.
-[[tool.mypy.overrides]]
-module = ["train.*", "tests.*"]
-disallow_subclassing_any = false
-warn_return_any = false
-warn_unused_ignores = false
-disallow_any_decorated = false
+addopts = "-q"

@@ -1,13 +1,12 @@
-# Exact pins, generated from the M0 environment (Python 3.12, Windows).
-# Install: pip install -r requirements.txt
---extra-index-url https://download.pytorch.org/whl/cpu
+# Full stack, pinned. Install with: pip install -r requirements.txt
+# onnxruntime version is shared with Project 1.
+torch==2.15.0
+torchaudio==2.11.1
 numpy==2.5.4
 onnx==1.23.2
 onnxruntime==1.31.1
 soundfile==0.14.0
 matplotlib==3.11.2
-torch==2.15.0
-torchaudio==2.11.1
 pytest==9.2.0
 ruff==0.17.3
 mypy==2.4.1
