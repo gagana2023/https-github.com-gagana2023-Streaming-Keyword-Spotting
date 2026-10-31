@@ -99,3 +99,32 @@ ORT logs `Please use QuantFormat.QDQ for activation type QInt8 and weight type Q
 will lead to bad performance on x64.` The spec fixes QOperator with QInt8 activations (the
 same recipe as Project 1), so I kept it. This is a likely reason INT8 could be slower than FP32
 in M4; I have not measured it yet, so it stays a hypothesis until `bench.py` runs.
+
+## M2 — Streaming features
+
+Learning mode: the ring buffers and `StreamingMFCC` are written by the project owner. What I
+(the assistant) provided is the stubs with concept notes, the tests, and the parity harness.
+
+### Interfaces
+- `SampleRingBuffer(capacity, dtype)`: `push(x)`, `read_into(out)` (oldest first, only when
+  full), `full`, `__len__`, `reset`. Capacity 640 for the MFCC window.
+- `FeatureRingBuffer(n_frames, n_mfcc, mean, std)`: float32 store; frames are **normalised at
+  push time** (10 values per hop) instead of normalising 490 values at each inference.
+- `StreamingMFCC.push(hop, out) -> bool`: one 320-sample hop in; the first hop is warm-up
+  (False), every later hop writes one raw (unnormalised) 10-coefficient frame and returns True.
+  Output is raw so it can be compared to `mfcc_ref.mfcc` at 1e-6 before normalisation.
+
+### Decisions
+- Raw frames out of `StreamingMFCC`, normalisation in `FeatureRingBuffer`: keeps the 1e-6
+  parity test about the maths only, and keeps the normalisation in one place.
+- Caller-owned `out` arrays and `read_into` everywhere, so the hot loop in M3/M4 can be
+  allocation-free apart from what `np.fft.rfft` itself allocates (to be measured, not assumed).
+- Tests use synthetic tones+noise clips (CI has no dataset or torch). The 50-real-clip parity
+  and the full-test-set prediction check live in `tools/stream_parity.py`, which needs the
+  dataset and writes `results/stream_feature_parity.json`.
+- Prediction parity is checked for both FP32 and INT8 against `train.eval_onnx.ort_features`
+  + the same batch-1 ORT sessions, so any disagreement can only come from the feature path.
+
+### Reproduce
+`python -m pytest tests/test_ring_buffer.py tests/test_streaming_mfcc.py` then
+`python -m tools.stream_parity`.
