@@ -84,3 +84,18 @@ CI has no torch. Modules that import it type-check there because `ignore_missing
 torch an `Any`; `pyproject.toml` relaxes three mypy flags for `train.*` and `tests.*` so the
 output is identical with and without torch. Torch-dependent tests use `importorskip`.
 Checked locally with a torch-free venv built from `requirements-ci.txt`.
+
+### Quantisation attempts (M1)
+| # | Settings | Val FP32 | Val INT8 | Drop |
+| --- | --- | --- | --- | --- |
+| 1 | QOperator, QInt8/QInt8, per-channel, MinMax, 200 clips | 93.20% | 93.32% | -0.11 pts |
+
+The first attempt is within the 2-point budget (INT8 is 0.11 points above FP32 on
+validation, which is noise-level), so none of the fallbacks (more calibration data, per-tensor,
+Entropy/Percentile) were tried. Test split, evaluated once after this choice: FP32 92.82%, INT8
+92.78%, 43 of 4,888 predictions differ.
+
+ORT logs `Please use QuantFormat.QDQ for activation type QInt8 and weight type QInt8. Or it
+will lead to bad performance on x64.` The spec fixes QOperator with QInt8 activations (the
+same recipe as Project 1), so I kept it. This is a likely reason INT8 could be slower than FP32
+in M4; I have not measured it yet, so it stays a hypothesis until `bench.py` runs.

@@ -1,0 +1,91 @@
+{
+  "split": "test",
+  "test_clips": 4888,
+  "test_class_counts": {
+    "yes": 419,
+    "no": 405,
+    "up": 425,
+    "down": 406,
+    "left": 412,
+    "right": 396,
+    "on": 396,
+    "off": 402,
+    "stop": 411,
+    "go": 402,
+    "_unknown_": 407,
+    "_silence_": 407
+  },
+  "fp32_accuracy": 0.9281914893617021,
+  "int8_accuracy": 0.9277823240589198,
+  "int8_minus_fp32": -0.00040916530278234386,
+  "fp32_per_class_accuracy": {
+    "yes": 0.9761336515513126,
+    "no": 0.9555555555555556,
+    "up": 0.9129411764705883,
+    "down": 0.8866995073891626,
+    "left": 0.9490291262135923,
+    "right": 0.9570707070707071,
+    "on": 0.9191919191919192,
+    "off": 0.9303482587064676,
+    "stop": 0.948905109489051,
+    "go": 0.900497512437811,
+    "_unknown_": 0.8108108108108109,
+    "_silence_": 0.9901719901719902
+  },
+  "int8_per_class_accuracy": {
+    "yes": 0.9761336515513126,
+    "no": 0.9555555555555556,
+    "up": 0.9129411764705883,
+    "down": 0.8891625615763546,
+    "left": 0.9490291262135923,
+    "right": 0.9545454545454546,
+    "on": 0.9166666666666666,
+    "off": 0.9303482587064676,
+    "stop": 0.948905109489051,
+    "go": 0.9054726368159204,
+    "_unknown_": 0.8108108108108109,
+    "_silence_": 0.9828009828009828
+  },
+  "predictions_differing_fp32_vs_int8": 43,
+  "parameter_count": 23756,
+  "model_size_bytes": {
+    "fp32_onnx": 94637,
+    "int8_onnx": 37589
+  },
+  "quantization": {
+    "format": "QOperator",
+    "activation_type": "QInt8",
+    "weight_type": "QInt8",
+    "per_channel": true,
+    "calibration_method": "minmax",
+    "calibration_clips": 200,
+    "calibration_source": "random clips from the training split, unaugmented",
+    "opset": 17,
+    "preprocess": "onnxruntime.quantization.shape_inference.quant_pre_process"
+  },
+  "features": "NumPy reference (features/mfcc_ref.py), normalised, float32 into ORT",
+  "ort_session": "batch 1, CPUExecutionProvider",
+  "env": {
+    "date_utc": "2026-10-31T19:04:58+00:00",
+    "git_commit": "53dba992de9cfc3852c06de1f2f18cb1259bffd4",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": {
+      "intra_op_num_threads": 1,
+      "inter_op_num_threads": 1
+    },
+    "command": "python -m train.eval_onnx"
+  }
+}

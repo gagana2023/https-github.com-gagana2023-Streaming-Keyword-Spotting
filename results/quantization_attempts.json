@@ -1,0 +1,18 @@
+[
+  {
+    "settings": {
+      "format": "QOperator",
+      "activation_type": "QInt8",
+      "weight_type": "QInt8",
+      "per_channel": true,
+      "calibration_method": "minmax",
+      "calibration_clips": 200,
+      "calibration_source": "random clips from the training split, unaugmented",
+      "opset": 17,
+      "preprocess": "onnxruntime.quantization.shape_inference.quant_pre_process"
+    },
+    "val_accuracy_fp32": 0.9320279090704479,
+    "val_accuracy_int8": 0.9331532748143146,
+    "torch_vs_onnx_fp32_max_logit_diff": 1.33514404296875e-05
+  }
+]
