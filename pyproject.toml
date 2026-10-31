@@ -1,0 +1,22 @@
+[project]
+name = "kws-stream"
+version = "0.1.0"
+description = "Streaming keyword spotting with INT8 inference (DS-CNN, ONNX Runtime)"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+files = ["features", "train", "kws", "tools", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
