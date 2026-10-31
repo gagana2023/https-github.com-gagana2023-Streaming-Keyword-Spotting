@@ -107,45 +107,38 @@ def main() -> None:
         for threads in (1, 0)
     ] + [("optimised", model, 1, False) for model in ("fp32", "int8")]
 
+    names = [
+        f"{mode}_{model}_{THREAD_LABELS[threads]}" + ("" if gc_on else "_nogc")
+        for mode, model, threads, gc_on in configs
+    ]
+    reps: dict[str, list[dict[str, Any]]] = {n: [] for n in names}
+
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
-        for mode, model, threads, gc_on in configs:
-            name = f"{mode}_{model}_{THREAD_LABELS[threads]}" + ("" if gc_on else "_nogc")
-            reps = []
-            for i in range(args.reps):
-                reps.append(
-                    run_once(
-                        mode,
-                        model,
-                        threads,
-                        gc_on,
-                        wav,
-                        threshold,
-                        smooth,
-                        tmp_dir,
-                        pin_cpu=pin if threads == 1 else None,
-                    )
-                )
-                t = reps[-1]["timings"]
+        # Interleaved: one repetition of every configuration per round, so slow drift in clocks
+        # or background load hits all configurations alike instead of whichever ran last.
+        for i in range(args.reps):
+            for name, (mode, model, threads, gc_on) in zip(names, configs, strict=True):
+                result = run_once(
+                    mode, model, threads, gc_on, wav, threshold, smooth, tmp_dir,
+                    pin_cpu=pin if threads == 1 else None,
+                )  # fmt: skip
+                reps[name].append(result)
+                t = result["timings"]
                 print(
-                    f"{name} rep {i + 1}/{args.reps}: inference p50 "
+                    f"round {i + 1}/{args.reps} {name}: inference p50 "
                     f"{t['inference_ms']['p50']:.3f} ms, "
-                    f"hop p99 {t['total_per_hop_ms']['p99']:.3f} ms"
+                    f"hop p99 {t['total_per_hop_ms']['p99']:.3f} ms",
+                    flush=True,
                 )
+        for name, (mode, model, threads, gc_on) in zip(names, configs, strict=True):
+            runs = reps[name]
             alloc = None
             if gc_on and threads == 1:
                 traced = run_once(
-                    mode,
-                    model,
-                    1,
-                    True,
-                    wav,
-                    threshold,
-                    smooth,
-                    tmp_dir,
-                    alloc_hops=ALLOC_HOPS,
-                    pin_cpu=pin,
-                )
+                    mode, model, 1, True, wav, threshold, smooth, tmp_dir,
+                    alloc_hops=ALLOC_HOPS, pin_cpu=pin,
+                )  # fmt: skip
                 alloc = traced["allocations"]
             write_results(
                 args.out_dir / f"latency_{name}.json",
@@ -154,13 +147,14 @@ def main() -> None:
                     "model": MODELS[model].name,
                     "model_bytes": MODELS[model].stat().st_size,
                     "stream": wav.name,
-                    "stream_seconds": reps[0]["stream_seconds"],
+                    "stream_seconds": runs[0]["stream_seconds"],
                     "settings": {
-                        **reps[0]["settings"],
+                        **runs[0]["settings"],
                         "threads": threads,
                         "repetitions": args.reps,
+                        "repetition_order": "interleaved across configurations",
                     },
-                    "aggregate": aggregate(reps),
+                    "aggregate": aggregate(runs),
                     "allocations": alloc,
                     "allocations_note": (
                         f"Python (tracemalloc) high-water mark above the start-of-hop level, over "
@@ -168,13 +162,14 @@ def main() -> None:
                     ),
                     "repetitions": [
                         {"timings": r["timings"], "peak_rss_bytes": r["peak_rss_bytes"]}
-                        for r in reps
+                        for r in runs
                     ],
                     "note": "Python-on-host-CPU timings; not device or accelerator latency. "
                     "threads 0 = ORT intra-op default (all cores)",
                 },
                 ort_threads={"intra_op_num_threads": threads, "inter_op_num_threads": 1},
             )
+
 
 
 if __name__ == "__main__":
