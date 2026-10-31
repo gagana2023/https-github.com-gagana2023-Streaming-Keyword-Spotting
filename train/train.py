@@ -30,13 +30,13 @@ def to_features(frontend: TorchMfcc, pcm: np.ndarray[Any, Any]) -> torch.Tensor:
     return frontend(x).unsqueeze(1)
 
 
-@torch.no_grad()
 def evaluate(model: nn.Module, frontend: TorchMfcc, data: SplitData, batch: int = 500) -> float:
     model.eval()
     correct = 0
-    for i in range(0, len(data.y), batch):
-        logits = model(to_features(frontend, data.x[i : i + batch]))
-        correct += int((logits.argmax(1).numpy() == data.y[i : i + batch]).sum())
+    with torch.no_grad():
+        for i in range(0, len(data.y), batch):
+            logits = model(to_features(frontend, data.x[i : i + batch]))
+            correct += int((logits.argmax(1).numpy() == data.y[i : i + batch]).sum())
     return correct / len(data.y)
 
 
