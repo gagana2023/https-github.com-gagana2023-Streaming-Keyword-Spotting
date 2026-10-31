@@ -51,3 +51,29 @@ Implemented in `kws/ring_buffer.py` and `kws/streaming_mfcc.py`; tested by
 
 Reproduce: `python -m pytest tests/test_ring_buffer.py tests/test_streaming_mfcc.py`, then
 `python -m tools.stream_parity`.
+
+## M3 — Streaming loop and evaluation
+
+| Decision | Alternatives | Why |
+| --- | --- | --- |
+| Detector: softmax, moving average of the last `k` posteriors (fewer while fewer than `k` exist), fire if the top class is a keyword and its score > threshold, then 1 s suppression | Average logits; reset history after a detection | Posteriors are bounded in [0, 1], so one threshold means the same thing for any `k`. History keeps updating while suppressed, so the average stays current. |
+| Time is counted in samples (`(hop index + 1) * 320`); a detection is stamped with the end of the 1 s window that fired | Wall-clock time | Results do not depend on machine speed. The 49 frames cover exactly the last 16,000 samples, so the stamp is the window end. |
+| Inference is scheduled by hop count (`(h + 1) % infer_every == 0` and 49 frames available); first inference at hop 50 | Wall-clock timer | Deterministic and testable (`test_run_stream_schedule_and_replay`). |
+| `ORTModel` binds the input and output arrays once and only writes into them | Rebind per call; `session.run` | No per-call allocation (spec 3.5). A test checks the bound path equals `session.run` after in-place writes. `threads=0` means all cores. |
+| Sweep records logits once and replays them through the same `Detector` for every (k, threshold) | Re-run ORT per grid point | Neither parameter changes features or model output, so replay is exact (tested) and the whole 5 x 42 grid takes about 40 s. |
+| Stream noise bed: random 5-15 s pieces of the 2 held-out files, each scaled to equal RMS, cross-faded 100 ms, level fixed at RMS 0.02 | Add noise per utterance | One continuous background, as in a real stream; noise-only stretches then contain real noise. The 1 h stream reuses about 155 s of noise audio many times, so the noise is unseen but not unique. |
+| SNR is set per utterance by scaling the speech so its RMS over the speech extent is 5-20 dB (uniform) above the bed RMS | Fixed SNR | Spec 3.6. The clip's own recorded background is scaled with it; this is small but means the SNR is nominal. |
+| Gap = 1-3 s between the previous word's end and the next word's start, measured on speech extents | Gap between clip boundaries | Matches "random 1-3 s gaps" literally. Hit windows of neighbouring words never overlap. 10 % of words are followed by an extra 5-10 s noise-only stretch. |
+| Ground-truth start/end = energy endpoint detector (10 ms frames within 20 dB of the loudest frame) on the clean clip | Whole 1 s clip; forced alignment | The dataset has no word timings. The endpoints are approximate; the asymmetric hit window (-0.25 s, +0.75 s) absorbs some of that. |
+| About 30 % of stream words are `_unknown_`, drawn from the full pool of that split's other-word clips (not only the 1/12 subsample) | Natural ratio (about 1/11) | Gives false accepts on unknown words a fair chance to show up. It makes the stream harder than a typical mix (see limitations). |
+| Val stream (20 min) from validation utterances, test stream (60 min) from test utterances, seeds 101 and 202; no utterance repeats within a stream | One stream for both | Spec 3.6. Generation is deterministic: regenerating gave identical numbers (checksums in `results/streams.json`). |
+| Scoring: each keyword matched once by its earliest same-label detection in [start - 0.25, end + 0.75]; every other detection is a false accept (categorised for diagnosis only) | Count repeats inside the window as part of the hit | Spec 3.6: "any other detection". |
+| Operating-point rule, fixed before looking at the sweep: lowest miss rate with at most 10 false accepts/hour on the validation stream; ties go to fewer false accepts, then higher threshold, then smaller window. Grid: k in 1..5, 42 thresholds from 0.30 to 0.999 | Fixed k = 3; knee of the curve by eye | The 10/h cap is a number I chose, not one from the spec. On a 20-minute stream one false accept is 3/h, so the chosen point rests on 3 false accepts. The full grid is in `results/stream_eval_val.json`. |
+| Test evaluation reads the threshold and k from `results/stream_eval_val.json`; FP32 is also scored at the same point | Re-tune per model | The test stream cannot influence the choice. INT8 is the primary (deployed) model. |
+
+### Findings
+
+- Chosen operating point: k = 4, threshold 0.93 (validation: 38.6 % miss, 9 false accepts/hour). On the test stream the same point gives 46.7 % miss (441 of 828 keywords hit) and 15 false accepts in 1 hour for INT8; FP32 gives 46.3 % and 13. INT8 and FP32 agree within noise.
+- This is much worse than the 92.8 % clip accuracy suggests. `tools/stream_diagnostic.py` (validation stream only) classifies the 1 s window centred on each word: keyword accuracy is 83.9 % overall (73.3 % at 5-10 dB, 88.8 % at 10-15 dB, 90.5 % at 15-20 dB), and 27.4 % of unknown words are labelled as keywords. So the main cause is the model on noisier, unseen-noise audio, not the streaming code (M2 showed the streaming features and predictions match the offline path exactly). Smoothing and a high threshold add further misses on top.
+- I did not retrain or change the model: that would change scope. One likely reason, not tested: training noise was added at amplitude 0-0.1 of the raw files, which is mostly a much higher SNR than the 5-20 dB streams, and pink noise (a held-out file) has no equivalent in the training noise pool.
+- Not tested, so not a finding: whether training with lower-SNR augmentation would close the gap.

@@ -1,0 +1,114 @@
+{
+  "streams": {
+    "val": {
+      "split": "val",
+      "seed": 101,
+      "duration_s": 1200.0,
+      "events": 373,
+      "keywords": 249,
+      "unknown_words": 124,
+      "per_label": {
+        "_unknown_": 124,
+        "down": 25,
+        "go": 20,
+        "left": 23,
+        "no": 20,
+        "off": 27,
+        "on": 25,
+        "right": 25,
+        "stop": 24,
+        "up": 22,
+        "yes": 38
+      },
+      "noise_only_stretches": 40,
+      "noise_only_seconds": 297.67531250000036,
+      "held_out_noise_files": [
+        "doing_the_dishes.wav",
+        "pink_noise.wav"
+      ],
+      "recipe": {
+        "noise_rms": 0.02,
+        "snr_db_range": [
+          5.0,
+          20.0
+        ],
+        "gap_s_range": [
+          1.0,
+          3.0
+        ],
+        "noise_only_prob": 0.1,
+        "noise_only_s_range": [
+          5.0,
+          10.0
+        ],
+        "unknown_fraction": 0.3
+      },
+      "wav_sha256": "5aab38e7fb86aa5fe61c830fea6a6a3c949215e0b5fd403de713e6a0f0121394"
+    },
+    "test": {
+      "split": "test",
+      "seed": 202,
+      "duration_s": 3600.0,
+      "events": 1174,
+      "keywords": 828,
+      "unknown_words": 346,
+      "per_label": {
+        "_unknown_": 346,
+        "down": 81,
+        "go": 70,
+        "left": 75,
+        "no": 93,
+        "off": 81,
+        "on": 89,
+        "right": 67,
+        "stop": 85,
+        "up": 84,
+        "yes": 103
+      },
+      "noise_only_stretches": 104,
+      "noise_only_seconds": 743.8792499999988,
+      "held_out_noise_files": [
+        "doing_the_dishes.wav",
+        "pink_noise.wav"
+      ],
+      "recipe": {
+        "noise_rms": 0.02,
+        "snr_db_range": [
+          5.0,
+          20.0
+        ],
+        "gap_s_range": [
+          1.0,
+          3.0
+        ],
+        "noise_only_prob": 0.1,
+        "noise_only_s_range": [
+          5.0,
+          10.0
+        ],
+        "unknown_fraction": 0.3
+      },
+      "wav_sha256": "bd7ff91ce6e8c8b70c8c20b8b9e28482cfe0185794192005b5a44a5b6629f069"
+    }
+  },
+  "env": {
+    "date_utc": "2026-10-31T20:19:52+00:00",
+    "git_commit": "aa9f53e5ac11bee7e50b37fdcae017e5d9eedc57",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": null,
+    "command": "python -m tools.make_streams --split test --minutes 60"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "split": "val",
+  "model": "dscnn_int8.onnx",
+  "window": "1 s centred on the word's midpoint, classified offline (argmax)",
+  "keyword_accuracy": 0.8393574297188755,
+  "keyword_accuracy_by_snr": {
+    "5-10 dB": {
+      "keywords": 86,
+      "accuracy": 0.7325581395348837
+    },
+    "10-15 dB": {
+      "keywords": 89,
+      "accuracy": 0.8876404494382022
+    },
+    "15-20 dB": {
+      "keywords": 74,
+      "accuracy": 0.9054054054054054
+    }
+  },
+  "unknown_words": 124,
+  "unknown_labelled_as_keyword": 0.27419354838709675,
+  "unknown_accuracy": 0.7258064516129032,
+  "env": {
+    "date_utc": "2026-10-31T20:21:50+00:00",
+    "git_commit": "aa9f53e5ac11bee7e50b37fdcae017e5d9eedc57",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": {
+      "intra_op_num_threads": 1,
+      "inter_op_num_threads": 1
+    },
+    "command": "python -m tools.stream_diagnostic"
+  }
+}

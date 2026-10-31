@@ -1,0 +1,76 @@
+{
+  "split": "test",
+  "stream_seconds": 3600.0,
+  "operating_point": {
+    "threshold": 0.93,
+    "smooth": 4,
+    "infer_every": 5,
+    "suppress_s": 1.0,
+    "chosen_on": "validation stream (results/stream_eval_val.json)",
+    "selection_rule": "lowest miss rate with <= 10.0 false accepts/hour on the validation stream; ties: fewer false accepts, higher threshold, smaller window"
+  },
+  "scoring": {
+    "hit_window_s": [
+      -0.25,
+      0.75
+    ]
+  },
+  "primary_model": "int8",
+  "models": {
+    "int8": {
+      "keywords": 828,
+      "unknown_words": 346,
+      "hits": 441,
+      "misses": 387,
+      "miss_rate": 0.4673913043478261,
+      "false_accepts": 15,
+      "false_accepts_per_hour": 15.0,
+      "false_accept_categories": {
+        "wrong_or_repeat_in_keyword_window": 4,
+        "in_unknown_word_window": 8,
+        "elsewhere": 3
+      },
+      "stream_hours": 1.0,
+      "median_detection_delay_after_word_end_s": 0.19000000000005457
+    },
+    "fp32": {
+      "keywords": 828,
+      "unknown_words": 346,
+      "hits": 445,
+      "misses": 383,
+      "miss_rate": 0.46256038647342995,
+      "false_accepts": 13,
+      "false_accepts_per_hour": 13.0,
+      "false_accept_categories": {
+        "wrong_or_repeat_in_keyword_window": 4,
+        "in_unknown_word_window": 8,
+        "elsewhere": 1
+      },
+      "stream_hours": 1.0,
+      "median_detection_delay_after_word_end_s": 0.19000000000005457
+    }
+  },
+  "env": {
+    "date_utc": "2026-10-31T20:21:25+00:00",
+    "git_commit": "aa9f53e5ac11bee7e50b37fdcae017e5d9eedc57",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": {
+      "intra_op_num_threads": 1,
+      "inter_op_num_threads": 1
+    },
+    "command": "python -m tools.eval_stream"
+  }
+}

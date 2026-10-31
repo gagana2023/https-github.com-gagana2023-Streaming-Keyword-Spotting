@@ -1,0 +1,1664 @@
+{
+  "split": "val",
+  "model": "dscnn_int8.onnx",
+  "stream_seconds": 1200.0,
+  "keywords": 249,
+  "infer_every": 5,
+  "suppress_s": 1.0,
+  "max_fa_per_hour": 10.0,
+  "chosen": {
+    "smooth": 4,
+    "threshold": 0.93,
+    "hits": 153,
+    "misses": 96,
+    "miss_rate": 0.3855421686746988,
+    "false_accepts": 3,
+    "false_accepts_per_hour": 9.0,
+    "rule": "lowest miss rate with <= 10.0 false accepts/hour on the validation stream; ties: fewer false accepts, higher threshold, smaller window"
+  },
+  "grid": [
+    {
+      "smooth": 1,
+      "threshold": 0.3,
+      "hits": 177,
+      "misses": 72,
+      "miss_rate": 0.2891566265060241,
+      "false_accepts": 423,
+      "false_accepts_per_hour": 1269.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.325,
+      "hits": 177,
+      "misses": 72,
+      "miss_rate": 0.2891566265060241,
+      "false_accepts": 399,
+      "false_accepts_per_hour": 1197.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.35,
+      "hits": 181,
+      "misses": 68,
+      "miss_rate": 0.27309236947791166,
+      "false_accepts": 370,
+      "false_accepts_per_hour": 1110.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.375,
+      "hits": 178,
+      "misses": 71,
+      "miss_rate": 0.285140562248996,
+      "false_accepts": 343,
+      "false_accepts_per_hour": 1029.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.4,
+      "hits": 175,
+      "misses": 74,
+      "miss_rate": 0.2971887550200803,
+      "false_accepts": 329,
+      "false_accepts_per_hour": 987.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.425,
+      "hits": 177,
+      "misses": 72,
+      "miss_rate": 0.2891566265060241,
+      "false_accepts": 294,
+      "false_accepts_per_hour": 882.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.45,
+      "hits": 180,
+      "misses": 69,
+      "miss_rate": 0.27710843373493976,
+      "false_accepts": 270,
+      "false_accepts_per_hour": 810.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.475,
+      "hits": 187,
+      "misses": 62,
+      "miss_rate": 0.24899598393574296,
+      "false_accepts": 250,
+      "false_accepts_per_hour": 750.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.5,
+      "hits": 188,
+      "misses": 61,
+      "miss_rate": 0.24497991967871485,
+      "false_accepts": 233,
+      "false_accepts_per_hour": 699.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.525,
+      "hits": 193,
+      "misses": 56,
+      "miss_rate": 0.2248995983935743,
+      "false_accepts": 216,
+      "false_accepts_per_hour": 648.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.55,
+      "hits": 193,
+      "misses": 56,
+      "miss_rate": 0.2248995983935743,
+      "false_accepts": 199,
+      "false_accepts_per_hour": 597.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.575,
+      "hits": 191,
+      "misses": 58,
+      "miss_rate": 0.23293172690763053,
+      "false_accepts": 185,
+      "false_accepts_per_hour": 555.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.6,
+      "hits": 189,
+      "misses": 60,
+      "miss_rate": 0.24096385542168675,
+      "false_accepts": 177,
+      "false_accepts_per_hour": 531.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.625,
+      "hits": 194,
+      "misses": 55,
+      "miss_rate": 0.22088353413654618,
+      "false_accepts": 158,
+      "false_accepts_per_hour": 474.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.65,
+      "hits": 194,
+      "misses": 55,
+      "miss_rate": 0.22088353413654618,
+      "false_accepts": 144,
+      "false_accepts_per_hour": 432.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.675,
+      "hits": 194,
+      "misses": 55,
+      "miss_rate": 0.22088353413654618,
+      "false_accepts": 135,
+      "false_accepts_per_hour": 405.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.7,
+      "hits": 195,
+      "misses": 54,
+      "miss_rate": 0.21686746987951808,
+      "false_accepts": 118,
+      "false_accepts_per_hour": 354.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.725,
+      "hits": 192,
+      "misses": 57,
+      "miss_rate": 0.2289156626506024,
+      "false_accepts": 105,
+      "false_accepts_per_hour": 315.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.75,
+      "hits": 195,
+      "misses": 54,
+      "miss_rate": 0.21686746987951808,
+      "false_accepts": 93,
+      "false_accepts_per_hour": 279.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.775,
+      "hits": 192,
+      "misses": 57,
+      "miss_rate": 0.2289156626506024,
+      "false_accepts": 79,
+      "false_accepts_per_hour": 237.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.8,
+      "hits": 187,
+      "misses": 62,
+      "miss_rate": 0.24899598393574296,
+      "false_accepts": 71,
+      "false_accepts_per_hour": 213.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.825,
+      "hits": 186,
+      "misses": 63,
+      "miss_rate": 0.25301204819277107,
+      "false_accepts": 59,
+      "false_accepts_per_hour": 177.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.85,
+      "hits": 181,
+      "misses": 68,
+      "miss_rate": 0.27309236947791166,
+      "false_accepts": 51,
+      "false_accepts_per_hour": 153.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.875,
+      "hits": 178,
+      "misses": 71,
+      "miss_rate": 0.285140562248996,
+      "false_accepts": 42,
+      "false_accepts_per_hour": 126.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.9,
+      "hits": 173,
+      "misses": 76,
+      "miss_rate": 0.30522088353413657,
+      "false_accepts": 35,
+      "false_accepts_per_hour": 105.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.91,
+      "hits": 168,
+      "misses": 81,
+      "miss_rate": 0.3253012048192771,
+      "false_accepts": 33,
+      "false_accepts_per_hour": 99.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.92,
+      "hits": 167,
+      "misses": 82,
+      "miss_rate": 0.3293172690763052,
+      "false_accepts": 28,
+      "false_accepts_per_hour": 84.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.93,
+      "hits": 165,
+      "misses": 84,
+      "miss_rate": 0.3373493975903614,
+      "false_accepts": 24,
+      "false_accepts_per_hour": 72.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.94,
+      "hits": 163,
+      "misses": 86,
+      "miss_rate": 0.3453815261044177,
+      "false_accepts": 19,
+      "false_accepts_per_hour": 57.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.95,
+      "hits": 160,
+      "misses": 89,
+      "miss_rate": 0.357429718875502,
+      "false_accepts": 18,
+      "false_accepts_per_hour": 54.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.96,
+      "hits": 155,
+      "misses": 94,
+      "miss_rate": 0.37751004016064255,
+      "false_accepts": 14,
+      "false_accepts_per_hour": 42.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.97,
+      "hits": 148,
+      "misses": 101,
+      "miss_rate": 0.40562248995983935,
+      "false_accepts": 10,
+      "false_accepts_per_hour": 30.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.98,
+      "hits": 143,
+      "misses": 106,
+      "miss_rate": 0.42570281124497994,
+      "false_accepts": 8,
+      "false_accepts_per_hour": 24.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.99,
+      "hits": 123,
+      "misses": 126,
+      "miss_rate": 0.5060240963855421,
+      "false_accepts": 6,
+      "false_accepts_per_hour": 18.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.995,
+      "hits": 112,
+      "misses": 137,
+      "miss_rate": 0.5502008032128514,
+      "false_accepts": 4,
+      "false_accepts_per_hour": 12.0
+    },
+    {
+      "smooth": 1,
+      "threshold": 0.999,
+      "hits": 72,
+      "misses": 177,
+      "miss_rate": 0.7108433734939759,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.3,
+      "hits": 185,
+      "misses": 64,
+      "miss_rate": 0.2570281124497992,
+      "false_accepts": 389,
+      "false_accepts_per_hour": 1167.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.325,
+      "hits": 189,
+      "misses": 60,
+      "miss_rate": 0.24096385542168675,
+      "false_accepts": 354,
+      "false_accepts_per_hour": 1062.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.35,
+      "hits": 190,
+      "misses": 59,
+      "miss_rate": 0.23694779116465864,
+      "false_accepts": 321,
+      "false_accepts_per_hour": 963.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.375,
+      "hits": 194,
+      "misses": 55,
+      "miss_rate": 0.22088353413654618,
+      "false_accepts": 294,
+      "false_accepts_per_hour": 882.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.4,
+      "hits": 198,
+      "misses": 51,
+      "miss_rate": 0.20481927710843373,
+      "false_accepts": 270,
+      "false_accepts_per_hour": 810.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.425,
+      "hits": 198,
+      "misses": 51,
+      "miss_rate": 0.20481927710843373,
+      "false_accepts": 246,
+      "false_accepts_per_hour": 738.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.45,
+      "hits": 202,
+      "misses": 47,
+      "miss_rate": 0.18875502008032127,
+      "false_accepts": 217,
+      "false_accepts_per_hour": 651.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.475,
+      "hits": 202,
+      "misses": 47,
+      "miss_rate": 0.18875502008032127,
+      "false_accepts": 184,
+      "false_accepts_per_hour": 552.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.5,
+      "hits": 203,
+      "misses": 46,
+      "miss_rate": 0.18473895582329317,
+      "false_accepts": 155,
+      "false_accepts_per_hour": 465.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.525,
+      "hits": 204,
+      "misses": 45,
+      "miss_rate": 0.18072289156626506,
+      "false_accepts": 140,
+      "false_accepts_per_hour": 420.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.55,
+      "hits": 203,
+      "misses": 46,
+      "miss_rate": 0.18473895582329317,
+      "false_accepts": 119,
+      "false_accepts_per_hour": 357.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.575,
+      "hits": 202,
+      "misses": 47,
+      "miss_rate": 0.18875502008032127,
+      "false_accepts": 104,
+      "false_accepts_per_hour": 312.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.6,
+      "hits": 201,
+      "misses": 48,
+      "miss_rate": 0.1927710843373494,
+      "false_accepts": 96,
+      "false_accepts_per_hour": 288.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.625,
+      "hits": 199,
+      "misses": 50,
+      "miss_rate": 0.20080321285140562,
+      "false_accepts": 83,
+      "false_accepts_per_hour": 249.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.65,
+      "hits": 199,
+      "misses": 50,
+      "miss_rate": 0.20080321285140562,
+      "false_accepts": 73,
+      "false_accepts_per_hour": 219.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.675,
+      "hits": 197,
+      "misses": 52,
+      "miss_rate": 0.20883534136546184,
+      "false_accepts": 70,
+      "false_accepts_per_hour": 210.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.7,
+      "hits": 196,
+      "misses": 53,
+      "miss_rate": 0.21285140562248997,
+      "false_accepts": 60,
+      "false_accepts_per_hour": 180.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.725,
+      "hits": 194,
+      "misses": 55,
+      "miss_rate": 0.22088353413654618,
+      "false_accepts": 55,
+      "false_accepts_per_hour": 165.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.75,
+      "hits": 188,
+      "misses": 61,
+      "miss_rate": 0.24497991967871485,
+      "false_accepts": 51,
+      "false_accepts_per_hour": 153.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.775,
+      "hits": 183,
+      "misses": 66,
+      "miss_rate": 0.26506024096385544,
+      "false_accepts": 42,
+      "false_accepts_per_hour": 126.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.8,
+      "hits": 181,
+      "misses": 68,
+      "miss_rate": 0.27309236947791166,
+      "false_accepts": 29,
+      "false_accepts_per_hour": 87.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.825,
+      "hits": 174,
+      "misses": 75,
+      "miss_rate": 0.30120481927710846,
+      "false_accepts": 22,
+      "false_accepts_per_hour": 66.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.85,
+      "hits": 166,
+      "misses": 83,
+      "miss_rate": 0.3333333333333333,
+      "false_accepts": 20,
+      "false_accepts_per_hour": 60.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.875,
+      "hits": 165,
+      "misses": 84,
+      "miss_rate": 0.3373493975903614,
+      "false_accepts": 15,
+      "false_accepts_per_hour": 45.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.9,
+      "hits": 159,
+      "misses": 90,
+      "miss_rate": 0.3614457831325301,
+      "false_accepts": 12,
+      "false_accepts_per_hour": 36.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.91,
+      "hits": 158,
+      "misses": 91,
+      "miss_rate": 0.3654618473895582,
+      "false_accepts": 11,
+      "false_accepts_per_hour": 33.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.92,
+      "hits": 157,
+      "misses": 92,
+      "miss_rate": 0.36947791164658633,
+      "false_accepts": 9,
+      "false_accepts_per_hour": 27.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.93,
+      "hits": 155,
+      "misses": 94,
+      "miss_rate": 0.37751004016064255,
+      "false_accepts": 8,
+      "false_accepts_per_hour": 24.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.94,
+      "hits": 150,
+      "misses": 99,
+      "miss_rate": 0.39759036144578314,
+      "false_accepts": 5,
+      "false_accepts_per_hour": 15.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.95,
+      "hits": 146,
+      "misses": 103,
+      "miss_rate": 0.41365461847389556,
+      "false_accepts": 5,
+      "false_accepts_per_hour": 15.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.96,
+      "hits": 142,
+      "misses": 107,
+      "miss_rate": 0.42971887550200805,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.97,
+      "hits": 139,
+      "misses": 110,
+      "miss_rate": 0.44176706827309237,
+      "false_accepts": 2,
+      "false_accepts_per_hour": 6.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.98,
+      "hits": 131,
+      "misses": 118,
+      "miss_rate": 0.4738955823293173,
+      "false_accepts": 1,
+      "false_accepts_per_hour": 3.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.99,
+      "hits": 106,
+      "misses": 143,
+      "miss_rate": 0.5742971887550201,
+      "false_accepts": 1,
+      "false_accepts_per_hour": 3.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.995,
+      "hits": 90,
+      "misses": 159,
+      "miss_rate": 0.6385542168674698,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 2,
+      "threshold": 0.999,
+      "hits": 66,
+      "misses": 183,
+      "miss_rate": 0.7349397590361446,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.3,
+      "hits": 203,
+      "misses": 46,
+      "miss_rate": 0.18473895582329317,
+      "false_accepts": 358,
+      "false_accepts_per_hour": 1074.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.325,
+      "hits": 205,
+      "misses": 44,
+      "miss_rate": 0.17670682730923695,
+      "false_accepts": 321,
+      "false_accepts_per_hour": 963.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.35,
+      "hits": 206,
+      "misses": 43,
+      "miss_rate": 0.17269076305220885,
+      "false_accepts": 284,
+      "false_accepts_per_hour": 852.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.375,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 246,
+      "false_accepts_per_hour": 738.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.4,
+      "hits": 204,
+      "misses": 45,
+      "miss_rate": 0.18072289156626506,
+      "false_accepts": 211,
+      "false_accepts_per_hour": 633.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.425,
+      "hits": 206,
+      "misses": 43,
+      "miss_rate": 0.17269076305220885,
+      "false_accepts": 185,
+      "false_accepts_per_hour": 555.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.45,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 163,
+      "false_accepts_per_hour": 489.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.475,
+      "hits": 206,
+      "misses": 43,
+      "miss_rate": 0.17269076305220885,
+      "false_accepts": 148,
+      "false_accepts_per_hour": 444.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.5,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 133,
+      "false_accepts_per_hour": 399.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.525,
+      "hits": 205,
+      "misses": 44,
+      "miss_rate": 0.17670682730923695,
+      "false_accepts": 115,
+      "false_accepts_per_hour": 345.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.55,
+      "hits": 205,
+      "misses": 44,
+      "miss_rate": 0.17670682730923695,
+      "false_accepts": 100,
+      "false_accepts_per_hour": 300.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.575,
+      "hits": 203,
+      "misses": 46,
+      "miss_rate": 0.18473895582329317,
+      "false_accepts": 87,
+      "false_accepts_per_hour": 261.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.6,
+      "hits": 202,
+      "misses": 47,
+      "miss_rate": 0.18875502008032127,
+      "false_accepts": 76,
+      "false_accepts_per_hour": 228.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.625,
+      "hits": 201,
+      "misses": 48,
+      "miss_rate": 0.1927710843373494,
+      "false_accepts": 64,
+      "false_accepts_per_hour": 192.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.65,
+      "hits": 200,
+      "misses": 49,
+      "miss_rate": 0.19678714859437751,
+      "false_accepts": 50,
+      "false_accepts_per_hour": 150.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.675,
+      "hits": 199,
+      "misses": 50,
+      "miss_rate": 0.20080321285140562,
+      "false_accepts": 45,
+      "false_accepts_per_hour": 135.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.7,
+      "hits": 195,
+      "misses": 54,
+      "miss_rate": 0.21686746987951808,
+      "false_accepts": 44,
+      "false_accepts_per_hour": 132.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.725,
+      "hits": 193,
+      "misses": 56,
+      "miss_rate": 0.2248995983935743,
+      "false_accepts": 40,
+      "false_accepts_per_hour": 120.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.75,
+      "hits": 186,
+      "misses": 63,
+      "miss_rate": 0.25301204819277107,
+      "false_accepts": 36,
+      "false_accepts_per_hour": 108.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.775,
+      "hits": 181,
+      "misses": 68,
+      "miss_rate": 0.27309236947791166,
+      "false_accepts": 29,
+      "false_accepts_per_hour": 87.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.8,
+      "hits": 172,
+      "misses": 77,
+      "miss_rate": 0.3092369477911647,
+      "false_accepts": 19,
+      "false_accepts_per_hour": 57.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.825,
+      "hits": 168,
+      "misses": 81,
+      "miss_rate": 0.3253012048192771,
+      "false_accepts": 15,
+      "false_accepts_per_hour": 45.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.85,
+      "hits": 166,
+      "misses": 83,
+      "miss_rate": 0.3333333333333333,
+      "false_accepts": 13,
+      "false_accepts_per_hour": 39.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.875,
+      "hits": 162,
+      "misses": 87,
+      "miss_rate": 0.3493975903614458,
+      "false_accepts": 11,
+      "false_accepts_per_hour": 33.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.9,
+      "hits": 159,
+      "misses": 90,
+      "miss_rate": 0.3614457831325301,
+      "false_accepts": 8,
+      "false_accepts_per_hour": 24.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.91,
+      "hits": 159,
+      "misses": 90,
+      "miss_rate": 0.3614457831325301,
+      "false_accepts": 8,
+      "false_accepts_per_hour": 24.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.92,
+      "hits": 157,
+      "misses": 92,
+      "miss_rate": 0.36947791164658633,
+      "false_accepts": 7,
+      "false_accepts_per_hour": 21.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.93,
+      "hits": 153,
+      "misses": 96,
+      "miss_rate": 0.3855421686746988,
+      "false_accepts": 4,
+      "false_accepts_per_hour": 12.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.94,
+      "hits": 151,
+      "misses": 98,
+      "miss_rate": 0.39357429718875503,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.95,
+      "hits": 146,
+      "misses": 103,
+      "miss_rate": 0.41365461847389556,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.96,
+      "hits": 142,
+      "misses": 107,
+      "miss_rate": 0.42971887550200805,
+      "false_accepts": 2,
+      "false_accepts_per_hour": 6.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.97,
+      "hits": 138,
+      "misses": 111,
+      "miss_rate": 0.4457831325301205,
+      "false_accepts": 1,
+      "false_accepts_per_hour": 3.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.98,
+      "hits": 129,
+      "misses": 120,
+      "miss_rate": 0.4819277108433735,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.99,
+      "hits": 104,
+      "misses": 145,
+      "miss_rate": 0.5823293172690763,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.995,
+      "hits": 88,
+      "misses": 161,
+      "miss_rate": 0.6465863453815262,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 3,
+      "threshold": 0.999,
+      "hits": 60,
+      "misses": 189,
+      "miss_rate": 0.7590361445783133,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.3,
+      "hits": 209,
+      "misses": 40,
+      "miss_rate": 0.1606425702811245,
+      "false_accepts": 324,
+      "false_accepts_per_hour": 972.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.325,
+      "hits": 206,
+      "misses": 43,
+      "miss_rate": 0.17269076305220885,
+      "false_accepts": 301,
+      "false_accepts_per_hour": 903.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.35,
+      "hits": 208,
+      "misses": 41,
+      "miss_rate": 0.1646586345381526,
+      "false_accepts": 264,
+      "false_accepts_per_hour": 792.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.375,
+      "hits": 211,
+      "misses": 38,
+      "miss_rate": 0.15261044176706828,
+      "false_accepts": 240,
+      "false_accepts_per_hour": 720.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.4,
+      "hits": 210,
+      "misses": 39,
+      "miss_rate": 0.1566265060240964,
+      "false_accepts": 219,
+      "false_accepts_per_hour": 657.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.425,
+      "hits": 210,
+      "misses": 39,
+      "miss_rate": 0.1566265060240964,
+      "false_accepts": 193,
+      "false_accepts_per_hour": 579.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.45,
+      "hits": 208,
+      "misses": 41,
+      "miss_rate": 0.1646586345381526,
+      "false_accepts": 173,
+      "false_accepts_per_hour": 519.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.475,
+      "hits": 205,
+      "misses": 44,
+      "miss_rate": 0.17670682730923695,
+      "false_accepts": 152,
+      "false_accepts_per_hour": 456.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.5,
+      "hits": 208,
+      "misses": 41,
+      "miss_rate": 0.1646586345381526,
+      "false_accepts": 124,
+      "false_accepts_per_hour": 372.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.525,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 95,
+      "false_accepts_per_hour": 285.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.55,
+      "hits": 206,
+      "misses": 43,
+      "miss_rate": 0.17269076305220885,
+      "false_accepts": 78,
+      "false_accepts_per_hour": 234.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.575,
+      "hits": 202,
+      "misses": 47,
+      "miss_rate": 0.18875502008032127,
+      "false_accepts": 64,
+      "false_accepts_per_hour": 192.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.6,
+      "hits": 201,
+      "misses": 48,
+      "miss_rate": 0.1927710843373494,
+      "false_accepts": 54,
+      "false_accepts_per_hour": 162.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.625,
+      "hits": 200,
+      "misses": 49,
+      "miss_rate": 0.19678714859437751,
+      "false_accepts": 46,
+      "false_accepts_per_hour": 138.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.65,
+      "hits": 197,
+      "misses": 52,
+      "miss_rate": 0.20883534136546184,
+      "false_accepts": 45,
+      "false_accepts_per_hour": 135.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.675,
+      "hits": 195,
+      "misses": 54,
+      "miss_rate": 0.21686746987951808,
+      "false_accepts": 40,
+      "false_accepts_per_hour": 120.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.7,
+      "hits": 192,
+      "misses": 57,
+      "miss_rate": 0.2289156626506024,
+      "false_accepts": 37,
+      "false_accepts_per_hour": 111.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.725,
+      "hits": 187,
+      "misses": 62,
+      "miss_rate": 0.24899598393574296,
+      "false_accepts": 31,
+      "false_accepts_per_hour": 93.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.75,
+      "hits": 182,
+      "misses": 67,
+      "miss_rate": 0.26907630522088355,
+      "false_accepts": 22,
+      "false_accepts_per_hour": 66.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.775,
+      "hits": 174,
+      "misses": 75,
+      "miss_rate": 0.30120481927710846,
+      "false_accepts": 15,
+      "false_accepts_per_hour": 45.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.8,
+      "hits": 167,
+      "misses": 82,
+      "miss_rate": 0.3293172690763052,
+      "false_accepts": 15,
+      "false_accepts_per_hour": 45.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.825,
+      "hits": 166,
+      "misses": 83,
+      "miss_rate": 0.3333333333333333,
+      "false_accepts": 14,
+      "false_accepts_per_hour": 42.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.85,
+      "hits": 166,
+      "misses": 83,
+      "miss_rate": 0.3333333333333333,
+      "false_accepts": 11,
+      "false_accepts_per_hour": 33.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.875,
+      "hits": 161,
+      "misses": 88,
+      "miss_rate": 0.3534136546184739,
+      "false_accepts": 9,
+      "false_accepts_per_hour": 27.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.9,
+      "hits": 158,
+      "misses": 91,
+      "miss_rate": 0.3654618473895582,
+      "false_accepts": 7,
+      "false_accepts_per_hour": 21.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.91,
+      "hits": 157,
+      "misses": 92,
+      "miss_rate": 0.36947791164658633,
+      "false_accepts": 5,
+      "false_accepts_per_hour": 15.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.92,
+      "hits": 155,
+      "misses": 94,
+      "miss_rate": 0.37751004016064255,
+      "false_accepts": 4,
+      "false_accepts_per_hour": 12.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.93,
+      "hits": 153,
+      "misses": 96,
+      "miss_rate": 0.3855421686746988,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.94,
+      "hits": 148,
+      "misses": 101,
+      "miss_rate": 0.40562248995983935,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.95,
+      "hits": 143,
+      "misses": 106,
+      "miss_rate": 0.42570281124497994,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.96,
+      "hits": 140,
+      "misses": 109,
+      "miss_rate": 0.43775100401606426,
+      "false_accepts": 2,
+      "false_accepts_per_hour": 6.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.97,
+      "hits": 134,
+      "misses": 115,
+      "miss_rate": 0.46184738955823296,
+      "false_accepts": 1,
+      "false_accepts_per_hour": 3.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.98,
+      "hits": 125,
+      "misses": 124,
+      "miss_rate": 0.4979919678714859,
+      "false_accepts": 1,
+      "false_accepts_per_hour": 3.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.99,
+      "hits": 97,
+      "misses": 152,
+      "miss_rate": 0.6104417670682731,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.995,
+      "hits": 85,
+      "misses": 164,
+      "miss_rate": 0.6586345381526104,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 4,
+      "threshold": 0.999,
+      "hits": 54,
+      "misses": 195,
+      "miss_rate": 0.7831325301204819,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.3,
+      "hits": 212,
+      "misses": 37,
+      "miss_rate": 0.14859437751004015,
+      "false_accepts": 328,
+      "false_accepts_per_hour": 984.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.325,
+      "hits": 209,
+      "misses": 40,
+      "miss_rate": 0.1606425702811245,
+      "false_accepts": 302,
+      "false_accepts_per_hour": 906.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.35,
+      "hits": 211,
+      "misses": 38,
+      "miss_rate": 0.15261044176706828,
+      "false_accepts": 278,
+      "false_accepts_per_hour": 834.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.375,
+      "hits": 211,
+      "misses": 38,
+      "miss_rate": 0.15261044176706828,
+      "false_accepts": 257,
+      "false_accepts_per_hour": 771.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.4,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 233,
+      "false_accepts_per_hour": 699.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.425,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 200,
+      "false_accepts_per_hour": 600.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.45,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 152,
+      "false_accepts_per_hour": 456.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.475,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 121,
+      "false_accepts_per_hour": 363.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.5,
+      "hits": 207,
+      "misses": 42,
+      "miss_rate": 0.1686746987951807,
+      "false_accepts": 105,
+      "false_accepts_per_hour": 315.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.525,
+      "hits": 205,
+      "misses": 44,
+      "miss_rate": 0.17670682730923695,
+      "false_accepts": 89,
+      "false_accepts_per_hour": 267.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.55,
+      "hits": 201,
+      "misses": 48,
+      "miss_rate": 0.1927710843373494,
+      "false_accepts": 78,
+      "false_accepts_per_hour": 234.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.575,
+      "hits": 201,
+      "misses": 48,
+      "miss_rate": 0.1927710843373494,
+      "false_accepts": 63,
+      "false_accepts_per_hour": 189.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.6,
+      "hits": 199,
+      "misses": 50,
+      "miss_rate": 0.20080321285140562,
+      "false_accepts": 48,
+      "false_accepts_per_hour": 144.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.625,
+      "hits": 198,
+      "misses": 51,
+      "miss_rate": 0.20481927710843373,
+      "false_accepts": 44,
+      "false_accepts_per_hour": 132.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.65,
+      "hits": 197,
+      "misses": 52,
+      "miss_rate": 0.20883534136546184,
+      "false_accepts": 39,
+      "false_accepts_per_hour": 117.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.675,
+      "hits": 192,
+      "misses": 57,
+      "miss_rate": 0.2289156626506024,
+      "false_accepts": 33,
+      "false_accepts_per_hour": 99.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.7,
+      "hits": 190,
+      "misses": 59,
+      "miss_rate": 0.23694779116465864,
+      "false_accepts": 32,
+      "false_accepts_per_hour": 96.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.725,
+      "hits": 183,
+      "misses": 66,
+      "miss_rate": 0.26506024096385544,
+      "false_accepts": 26,
+      "false_accepts_per_hour": 78.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.75,
+      "hits": 182,
+      "misses": 67,
+      "miss_rate": 0.26907630522088355,
+      "false_accepts": 19,
+      "false_accepts_per_hour": 57.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.775,
+      "hits": 173,
+      "misses": 76,
+      "miss_rate": 0.30522088353413657,
+      "false_accepts": 14,
+      "false_accepts_per_hour": 42.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.8,
+      "hits": 168,
+      "misses": 81,
+      "miss_rate": 0.3253012048192771,
+      "false_accepts": 13,
+      "false_accepts_per_hour": 39.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.825,
+      "hits": 167,
+      "misses": 82,
+      "miss_rate": 0.3293172690763052,
+      "false_accepts": 11,
+      "false_accepts_per_hour": 33.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.85,
+      "hits": 163,
+      "misses": 86,
+      "miss_rate": 0.3453815261044177,
+      "false_accepts": 11,
+      "false_accepts_per_hour": 33.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.875,
+      "hits": 159,
+      "misses": 90,
+      "miss_rate": 0.3614457831325301,
+      "false_accepts": 9,
+      "false_accepts_per_hour": 27.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.9,
+      "hits": 158,
+      "misses": 91,
+      "miss_rate": 0.3654618473895582,
+      "false_accepts": 6,
+      "false_accepts_per_hour": 18.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.91,
+      "hits": 156,
+      "misses": 93,
+      "miss_rate": 0.37349397590361444,
+      "false_accepts": 4,
+      "false_accepts_per_hour": 12.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.92,
+      "hits": 155,
+      "misses": 94,
+      "miss_rate": 0.37751004016064255,
+      "false_accepts": 4,
+      "false_accepts_per_hour": 12.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.93,
+      "hits": 153,
+      "misses": 96,
+      "miss_rate": 0.3855421686746988,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.94,
+      "hits": 147,
+      "misses": 102,
+      "miss_rate": 0.40963855421686746,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.95,
+      "hits": 142,
+      "misses": 107,
+      "miss_rate": 0.42971887550200805,
+      "false_accepts": 3,
+      "false_accepts_per_hour": 9.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.96,
+      "hits": 138,
+      "misses": 111,
+      "miss_rate": 0.4457831325301205,
+      "false_accepts": 2,
+      "false_accepts_per_hour": 6.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.97,
+      "hits": 133,
+      "misses": 116,
+      "miss_rate": 0.46586345381526106,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.98,
+      "hits": 122,
+      "misses": 127,
+      "miss_rate": 0.5100401606425703,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.99,
+      "hits": 98,
+      "misses": 151,
+      "miss_rate": 0.606425702811245,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.995,
+      "hits": 86,
+      "misses": 163,
+      "miss_rate": 0.6546184738955824,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    },
+    {
+      "smooth": 5,
+      "threshold": 0.999,
+      "hits": 56,
+      "misses": 193,
+      "miss_rate": 0.7751004016064257,
+      "false_accepts": 0,
+      "false_accepts_per_hour": 0.0
+    }
+  ],
+  "env": {
+    "date_utc": "2026-10-31T20:20:33+00:00",
+    "git_commit": "aa9f53e5ac11bee7e50b37fdcae017e5d9eedc57",
+    "git_dirty": true,
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "logical_cores": 20,
+    "os": "Windows-11-10.0.26300-SP0",
+    "python": "3.12.10",
+    "packages": {
+      "numpy": "2.5.4",
+      "onnx": "1.23.2",
+      "onnxruntime": "1.31.1",
+      "soundfile": "0.14.0",
+      "matplotlib": "3.11.2",
+      "torch": "2.15.0+cpu",
+      "torchaudio": "2.11.1+cpu"
+    },
+    "ort_threads": {
+      "intra_op_num_threads": 1,
+      "inter_op_num_threads": 1
+    },
+    "command": "python -m tools.sweep_threshold"
+  }
+}
