@@ -33,8 +33,10 @@ def test_committed_matrices_match_builder() -> None:
     spec = load_spec()
     cfg = spec.cfg
     mel = mel_filterbank(cfg["sample_rate"], cfg["n_fft"], cfg["n_mels"], cfg["fmin"], cfg["fmax"])
-    np.testing.assert_array_equal(spec.mel, mel)
-    np.testing.assert_array_equal(spec.dct, dct_matrix(cfg["n_mels"], cfg["n_mfcc"]))
+    np.testing.assert_allclose(spec.mel, mel, rtol=0, atol=1e-12)  # platform rounding differs
+    np.testing.assert_allclose(
+        spec.dct, dct_matrix(cfg["n_mels"], cfg["n_mfcc"]), rtol=0, atol=1e-12
+    )
 
 
 def test_dct_orthonormal_and_matches_definition() -> None:
