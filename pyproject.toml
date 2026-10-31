@@ -20,3 +20,12 @@ files = ["features", "train", "kws", "tools", "tests"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+# CI has no torch (ignore_missing_imports makes nn.Module an Any base), local runs do. These
+# relaxations keep mypy output identical in both environments.
+[[tool.mypy.overrides]]
+module = ["train.*", "tests.*"]
+disallow_subclassing_any = false
+warn_return_any = false
+warn_unused_ignores = false
+disallow_any_decorated = false

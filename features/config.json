@@ -1,0 +1,15 @@
+{
+  "sample_rate": 16000,
+  "clip_samples": 16000,
+  "window": 640,
+  "hop": 320,
+  "n_fft": 1024,
+  "n_mels": 40,
+  "fmin": 20.0,
+  "fmax": 4000.0,
+  "log_eps": 1e-6,
+  "n_mfcc": 10,
+  "n_frames": 49,
+  "mean": null,
+  "std": null
+}
